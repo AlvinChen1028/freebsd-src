@@ -260,7 +260,9 @@ uvc_bulkbuf_sell_buf(struct uvc_buf_queue *bq,
 			}
 
 		if (!v->bulk.skip_payload &&
-		    v->bulk.header[1] & UVC_PL_HEADER_BIT_EOF)
+		    ((v->bulk.header[1] & UVC_PL_HEADER_BIT_EOF) ||
+			(bq->video && bq->video->sc &&
+				bq->video->sc->quirks & UVC_NO_EOF)))
 finished:
 			if (buf->vbuf.bytesused > 0) {
 				STAILQ_REMOVE_HEAD(&bq->product, link);

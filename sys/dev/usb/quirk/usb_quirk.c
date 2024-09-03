@@ -586,6 +586,9 @@ static struct usb_quirk_entry usb_quirks[USB_DEV_QUIRKS_MAX] = {
 
 	/* This works much better with if_cdce than if_ure */
 	USB_QUIRK(LENOVO, TBT3LAN, UQ_CFG_INDEX_1),
+
+	/* USB Cameras */
+	USB_QUIRK(CISCOLINKSYS3, ROOMKIT0B01, 0x0000, 0xffff, UQ_UVC_NO_EOF),
 };
 #undef USB_QUIRK_VO
 #undef USB_QUIRK_REV
@@ -664,6 +667,7 @@ static const char *usb_quirk_str[USB_QUIRK_MAX] = {
 	[UQ_MSC_DYMO_EJECT]		= "UQ_MSC_DYMO_EJECT",
 	[UQ_AU_SET_SPDIF_CM6206]	= "UQ_AU_SET_SPDIF_CM6206",
 	[UQ_WMT_IGNORE]			= "UQ_WMT_IGNORE",
+	[UQ_UVC_NO_EOF]			= "UQ_UVC_NO_EOF",
 };
 
 /*------------------------------------------------------------------------*
@@ -719,7 +723,6 @@ usb_test_quirk_by_info(const struct usbd_lookup_info *info, uint16_t quirk)
 		goto done;
 
 	USB_MTX_LOCK(&usb_quirk_mtx);
-
 	for (x = 0; x != USB_DEV_QUIRKS_MAX; x++) {
 		/* see if quirk information does not match */
 		if ((usb_quirks[x].vid != info->idVendor) ||

@@ -2645,6 +2645,9 @@ uvc_drv_attach(device_t dev)
 	if (usb_test_quirk(uaa, UQ_UVC_DISABLE_HUB_U1U2))
 		sc->quirks |= UVC_DISABLE_HUB_U1U2;
 
+	if (usb_test_quirk(uaa, UQ_UVC_NO_EOF))
+		sc->quirks |= UVC_NO_EOF;
+
 	sc->ctrl = uvc_drv_init_ctrl(uaa->iface, uaa->info.bIfaceIndex,
 		uaa->info.bIfaceNum);
 	if (!sc->ctrl) {

@@ -711,6 +711,7 @@ struct uvc_softc {
 #define UVC_BIGGER_TRANSFER_BUF	   0x4
 #define UVC_COMMIT_IN_ADVANCE	   0x8
 #define UVC_DISABLE_HUB_U1U2	   0x16
+#define UVC_NO_EOF		   (1<<6)
 	uint8_t			quirks;
 };
 
