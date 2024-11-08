@@ -1,26 +1,3 @@
-FreeBSD UVC Driver Source:
----------------
-Fork from FreeBSD CURRENT to support UVC driver. 
-
-Validating ENV:
----------------
-FreeBSD 14.1 + kernel (built based on this branch) + Dell OptiPlex 7420 AIO
-
-Validated Cameras and Applications:
----------------
-| Cameras | Applications |
-| --------- | ----------- |
-| Dell OptiPlex 7420 Built-In Camera | VLC, Cheese, pwcview. |
-| Jabra PanaCast 4K | VLC, Cheese, pwcview. |
-| Logitech WebCam C525 | VLC, Cheese, pwcview |
-| Logitech WebCam C925e | VLC, Cheese, pwcview |
-| Logitech WebCam C930e | VLC, Cheese, pwcview |
-| Logitech WebCam C922 Pro Stream | VLC, Cheese, pwcview |
-| Logitech BRIO | VLC, Cheese, pwcview |
-| Dell WebCam WB5023 | VLC, Cheese, pwcview |
-| Microsoft LifeCam Studio (TM) | VLC, Cheese, pwcview |
-
-
 FreeBSD Source:
 ---------------
 This is the top level of the FreeBSD source directory.
