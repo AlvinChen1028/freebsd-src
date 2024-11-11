@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,6 +36,13 @@
 
 #define UVC_V4L2_DEVICE_NAME		"video"
 
+#ifndef LINUX_MAJAR
+#define LINUX_MAJAR 81
+#endif
+#ifndef LINUX_MINOR
+#define LINUX_MINOR 0
+#endif
+
 enum uvc_v4l2_work_mode {
 	UVC_V4L2_MODE_READ	=	0x0,
 	UVC_V4L2_MODE_MMAP,
@@ -55,7 +65,6 @@ struct uvc_v4l2_cdev_priv {
 struct uvc_v4l2 {
 	struct cdev *cdev;
 };
-
 
 struct uvc_xu_control_mapping {
 	uint32_t id;

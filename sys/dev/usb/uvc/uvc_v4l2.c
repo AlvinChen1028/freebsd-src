@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -740,13 +743,6 @@ uvc_v4l2_unreg(struct uvc_drv_video *v)
 	/* remove */
 	v->v4l2 = NULL;
 }
-
-#ifndef LINUX_MAJAR
-#define LINUX_MAJAR 81
-#endif
-#ifndef LINUX_MINOR
-#define LINUX_MINOR 0
-#endif
 
 int
 uvc_v4l2_reg(struct uvc_drv_video *v)

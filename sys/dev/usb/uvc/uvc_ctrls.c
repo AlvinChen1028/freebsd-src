@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -892,7 +895,6 @@ uvc_ctrl_add_info(struct uvc_control *ctrl, const struct uvc_control_info *info)
 	int ret = 0;
 
 	ctrl->info = *info;
-	//INIT_LIST_HEAD(&ctrl->info.mappings);
 	STAILQ_INIT(&ctrl->info.mappings);
 
 	/* Allocate an array to save control values (cur, def, max, etc.) */

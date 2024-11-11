@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

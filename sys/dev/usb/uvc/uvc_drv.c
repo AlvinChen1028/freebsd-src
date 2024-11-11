@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -50,8 +53,6 @@
 #include <dev/usb/usb_core.h>
 #include <dev/usb/usb_device.h>
 #include <dev/usb/quirk/usb_quirk.h>
-
-//#include <compat/linsysfs/linsysfs_video.h>
 
 #include <contrib/v4l/videodev.h>
 #include <contrib/v4l/videodev2.h>
@@ -344,8 +345,6 @@ uvc_drv_xu_ctrl_query(struct uvc_drv_video *v, struct uvc_xu_control_query *q)
 	DPRINTF("%s query:%x unit:%d selector:%d size:%d\n",
 		__func__, q->query, q->unit, q->selector, q->size);
 
-	//hexdump(q, sizeof(*q), 0, 0);
-
 	memset(tmp, 0, 128);
 
 	if (!(q->query & 0x80))
@@ -384,7 +383,6 @@ uvc_drv_probe_video(struct uvc_drv_video *video, struct uvc_data_request *req)
 	if (ret)
 		goto done;
 
-	//UVC_QUIRK_PROBE_MINMAX
 	if (!(video->sc->quirks & UVC_QUIRK_PROBE_MINMAX)) {
 		ret = uvc_drv_get_video_ctrl(video, &reqmin, 1, GET_MIN);
 		if (ret)
@@ -438,7 +436,6 @@ uvc_drv_set_video(struct uvc_drv_video *video,
 	struct uvc_softc *sc = video->sc;
 
 	DPRINTF("set video %p\n", curthread);
-	//dump_hex(req, 26);
 
 	uvc_drv_show_video_ctrl(req);
 	mtx_lock(&video->mtx);
@@ -598,12 +595,10 @@ uvc_drv_get_v4l2_fmt(struct uvc_drv_video *v, struct v4l2_format *vfmt)
 
 	b = (uint8_t *)&pix->pixelformat;
 	DPRINTF("%s: format fcc:%c%c%c%c\n", __func__, b[0], b[1], b[2], b[3]);
-#if 0
 	DPRINTF("width:%d height:%d bytesperline:%d ", pix->width,
 		pix->height, pix->bytesperline);
 	DPRINTF("sizeimage:%d colorspace:%d\n", pix->sizeimage,
 		pix->colorspace);
-#endif
 
 	return 0;
 }
@@ -811,8 +806,6 @@ uvc_drv_enum_v4l2_framesizes(struct uvc_drv_video *v,
 	if (fmt == NULL)
 		return EINVAL;
 
-	//DPRINTF("%d\n", fmt->index);
-
 	if (fs->index >= fmt->nfrm)
 		return EINVAL;
 
@@ -820,11 +813,6 @@ uvc_drv_enum_v4l2_framesizes(struct uvc_drv_video *v,
 	fs->type = V4L2_FRMSIZE_TYPE_DISCRETE;
 	fs->x.discrete.width = frm->width;
 	fs->x.discrete.height = frm->height;
-#if 0
-	DPRINTF("index:%d type:%d width:%d height:%d\n",
-		fs->index, fs->type,
-		fs->x.discrete.width, fs->x.discrete.height);
-#endif
 
 	return 0;
 }
@@ -849,8 +837,6 @@ uvc_drv_enum_v4l2_fmt(struct uvc_drv_video *v, struct v4l2_fmtdesc *vfmt)
 	return 0;
 }
 
-//unsigned char data1[4096];
-
 static int
 uvc_drv_bulkfill_buf(struct uvc_drv_video *v, struct usb_page_cache *pc,
 	usb_frlength_t maxFramelen, usb_frlength_t actlen)
@@ -869,7 +855,6 @@ uvc_drv_bulkfill_buf(struct uvc_drv_video *v, struct usb_page_cache *pc,
 			return EINVAL;
 
 		if (actlen - h.len <= 0)
-			//v->bulk.skip_payload = 1;
 			return EINVAL;
 
 		usbd_copy_out(pc, 0, &(v->bulk.header), h.len);
@@ -948,7 +933,7 @@ uvc_drv_bulkdata_callback(struct usb_xfer *xfer, usb_error_t error)
 		if (dir == UE_DIR_IN)
 			uvc_drv_bulkfill_buf(sc->video, pc,
 				usbd_xfer_max_len(xfer), actlen);
-	//fallthrough
+
 	case USB_ST_SETUP:
 		usbd_xfer_set_frame_len(xfer, 0, usbd_xfer_max_len(xfer));
 		usbd_transfer_submit(xfer);
@@ -977,7 +962,7 @@ uvc_drv_data_callback(struct usb_xfer *xfer, usb_error_t error)
 			uvc_drv_fill_buf(sc->video, pc, i,
 				usbd_xfer_max_framelen(xfer), size);
 		}
-	//fallthrough
+
 	case USB_ST_SETUP:
 tr_setup:
 		for (i = 0; i < nframes; i++)
@@ -1001,7 +986,6 @@ tr_setup:
 static void
 uvc_intr_callback(struct usb_xfer *xfer, usb_error_t error)
 {
-	//struct uvc_softc *sc = usbd_xfer_softc(xfer);
 	struct usb_page_cache *pc;
 	int actlen;
 	int cmd;
@@ -1020,7 +1004,7 @@ uvc_intr_callback(struct usb_xfer *xfer, usb_error_t error)
 			DPRINTF("ignored transfer, %d bytes\n", actlen);
 		}
 	}
-	//fallthrough
+
 	case USB_ST_SETUP:
 tr_setup:
 		usbd_xfer_set_frame_len(xfer, 0, usbd_xfer_max_framelen(xfer));
@@ -1045,7 +1029,7 @@ static const struct usb_config uvc_intr_config[8] = {
 		.callback = &uvc_intr_callback,
 	},
 };
-#if 1
+
 static struct usb_config uvc_bulk_config[3] = {
 	[0] = {
 		.type = UE_BULK,
@@ -1077,7 +1061,7 @@ static struct usb_config uvc_bulk_config[3] = {
 		.usb_mode = USB_MODE_HOST,
 	},
 };
-#endif
+
 static const struct usb_config uvc_config[8] = {
 	[0] = {
 	.type = UE_ISOCHRONOUS,
@@ -1232,7 +1216,7 @@ uvc_drv_start_video(struct uvc_drv_video *video)
 	}
 	DPRINTF("payload --- %d\n", mps);
 	found = 0;
-	//packet = 0;
+
 	desc = (struct usb_descriptor *)(video->data->iface->idesc);
 	while ((desc = usb_desc_foreach(sc->udev->cdesc, desc))) {
 		if (desc->bDescriptorType == UDESC_INTERFACE) {
@@ -1249,12 +1233,9 @@ uvc_drv_start_video(struct uvc_drv_video *video)
 		ed = (struct usb_endpoint_descriptor *)desc;
 		if (desc->bDescriptorType == UDESC_ENDPOINT_SS_COMP) {
 			essd = (struct usb_endpoint_ss_comp_descriptor *)desc;
-			//burst = essd->bMaxBurst + 1;
-			//ps = burst * packet;
 			ps = UGETW(essd->wBytesPerInterval);
 		}
 		if (desc->bDescriptorType == UDESC_ENDPOINT) {
-			//packet = UGETW(ed->wMaxPacketSize) & 0x7ff;
 			ps = UGETW(ed->wMaxPacketSize);
 			ps = (ps & 0x07ff) * (1 + ((ps >> 11) & 3));
 		}
@@ -1354,12 +1335,6 @@ uvc_drv_stop_video(struct uvc_drv_video *video, int close)
 	}
 
 	mtx_lock(&video->mtx);
-#if 0
-	for (int i = 0; i < UVC_N_TRANSFER; i++) {
-		usbd_transfer_stop(video->data->xfer[i]);
-	}
-	usb_pause_mtx(NULL, 10);
-#endif
 	uvc_buf_queue_disable(&video->bq);
 	video->enable = 0;
 	if (close)
@@ -1627,12 +1602,6 @@ uvc_drv_destroy_video(struct uvc_drv_video *v)
 
 		uvc_buf_queue_disable(&v->bq);
 		uvc_buf_queue_free_bufs(&v->bq);
-
-		/* entry close */
-		//uvc_v4l2_unreg(v);
-
-		/* data free */
-		//free(v, M_UVC);
 	}
 }
 
@@ -1842,7 +1811,6 @@ uvc_drv_parse_data(struct uvc_softc *sc, struct uvc_drv_data *data)
 			}
 		}
 		if (desc->bDescriptorType == UDESC_ENDPOINT) {
-			//packet = UGETW(ed->wMaxPacketSize) & 0x7ff;
 			ps = UGETW(ed->wMaxPacketSize);
 			ps = (ps & 0x07ff) * (1 + ((ps >> 11) & 3));
 			if (ps > data->maxpsize) {
@@ -2024,16 +1992,12 @@ uvc_alloc_entity(uint16_t type, uint8_t id,
 	struct uvc_drv_entity *entity;
 	unsigned int num_inputs;
 	unsigned int size;
-	//unsigned int i;
 
 	extra_size = roundup(extra_size, 8);
-	//printf("extra_size = %d\n", extra_size);
 	if (num_pads)
 		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
 	else
 		num_inputs = 0;
-	//size = sizeof(*entity) + extra_size + sizeof(*entity->pads) * num_pads
-	//	+ num_inputs;
 	size = sizeof(*entity) + extra_size + num_inputs;
 	entity = malloc(size, M_UVC, M_ZERO | M_WAITOK);
 	if (entity == NULL)
@@ -2044,11 +2008,6 @@ uvc_alloc_entity(uint16_t type, uint8_t id,
 
 	entity->num_links = 0;
 	entity->num_pads = num_pads;
-	//entity->pads = ((void *)(entity + 1)) + extra_size;
-	//for (i = 0; i < num_inputs; ++i)
-	//entity->pads[i].flags = MEDIA_PAD_FL_SINK;
-	//if (!UVC_ENTITY_IS_OTERM(entity) && num_pads)
-	//entity->pads[num_pads-1].flags = MEDIA_PAD_FL_SOURCE;
 	entity->bNrInPins = num_inputs;
 	entity->baSourceID = (uint8_t *)(entity + 1) + extra_size;
 	return entity;
@@ -2086,7 +2045,6 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 
 		if (vsnum > 1 || hdesc->bLength < 12 + vsnum) {
 			DPRINTF("WARNING: to_be_implement or bad interface.\n");
-			//return EINVAL;
 			if (vsnum > 1)
 				vsnum = 1;
 		}
@@ -2335,7 +2293,6 @@ static int
 uvc_drv_parse_vendor_ctrl(struct uvc_softc *sc, struct usb_descriptor *desc,
 	struct uvc_drv_ctrl *ctrl)
 {
-	//0x046d
 	switch (UGETW(sc->udev->ddesc.idVendor)) {
 	case USB_VENDOR_ID_LOGITECH:
 		if (desc->bDescriptorType != 0x41 ||

@@ -1,6 +1,9 @@
 /*
+ * SPDX-License-Identifier: BSD-2-Clause
  *
- * Copyright (c) 2024 Dell Inc.. All rights reserved.
+ * Copyright (c) 2024 Dell Inc.
+ *
+ *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -229,12 +232,7 @@ uvc_bulkbuf_sell_buf(struct uvc_buf_queue *bq,
 
 	if (v->bulk.last_fid != (v->bulk.header[1] & UVC_PL_HEADER_BIT_FID))
 		v->bulk.last_fid = (v->bulk.header[1] & UVC_PL_HEADER_BIT_FID);
-#if 0
-	if (uvc_buf_check_length(bq->video, buf, len, finish)) {
-		buf->vbuf.bytesused = 0;
-		goto clean;
-	}
-#endif
+
 	if (len != 0 && !v->bulk.skip_payload) {
 		maxlen = buf->vbuf.length - buf->vbuf.bytesused;
 		nbytes = min(maxlen, len);
@@ -625,7 +623,6 @@ uvc_buf_queue_disable(struct uvc_buf_queue *queue)
 
 	cv_broadcast(&queue->io_cv);
 	queue->flags = 0;
-	//queue->flags &= ~UVC_BUFFER_QUEUE_WORKING;
 	mtx_unlock(&queue->mtx);
 	return 0;
 }
