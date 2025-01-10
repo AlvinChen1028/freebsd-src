@@ -4,6 +4,7 @@
  * Copyright (c) 2024 Dell Inc.
  *
  *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
+ *	Zhichao Li <Zhichao1.Li@Dell.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -522,7 +523,7 @@ uvc_v4l2_ioctl(struct cdev *dev, u_long cmd, caddr_t data, int fflag,
 		break;
 
 	case VIDIOC_G_CTRL:
-		printf("aaaaaaaaaaaaaaaaaaaaaaaunsupport ioctl VIDIOC_G_CTRL.\n");
+		printf("unsupport ioctl VIDIOC_G_CTRL.\n");
 		ret = EINVAL;
 		break;
 	case VIDIOC_G_STD:
