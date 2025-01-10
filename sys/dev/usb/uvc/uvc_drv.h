@@ -447,20 +447,20 @@ struct uvc_data_payload_header {
 #define UVC_CTRL_DATA_BITMASK      5
 
 /* Control flags */
-#define UVC_CTRL_FL_SET_CUR           0x0001
-#define UVC_CTRL_FL_GET_CUR           0x0002
-#define UVC_CTRL_FL_GET_MIN           0x0004
-#define UVC_CTRL_FL_GET_MAX           0x0008
-#define UVC_CTRL_FL_GET_RES           0x0010
-#define UVC_CTRL_FL_GET_DEF           0x0020
-#define UVC_CTRL_FL_RESTORE           0x0040
-#define UVC_CTRL_FL_AUTO_UPDATE       0x0080
-#define UVC_CTRL_FL_ASYNCHRONOUS	0x0100
+#define UVC_CTRL_SET_CUR           0x0001
+#define UVC_CTRL_GET_CUR           0x0002
+#define UVC_CTRL_GET_MIN           0x0004
+#define UVC_CTRL_GET_MAX           0x0008
+#define UVC_CTRL_GET_RES           0x0010
+#define UVC_CTRL_GET_DEF           0x0020
+#define UVC_CTRL_RESTORE           0x0040
+#define UVC_CTRL_AUTO_UPDATE       0x0080
+#define UVC_CTRL_ASYNCHRONOUS	0x0100
 
-#define UVC_CTRL_FL_GET_RANGE \
-	(UVC_CTRL_FL_GET_CUR | UVC_CTRL_FL_GET_MIN | \
-	UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES | \
-	UVC_CTRL_FL_GET_DEF)
+#define UVC_CTRL_GET_RANGE \
+	(UVC_CTRL_GET_CUR | UVC_CTRL_GET_MIN | \
+	UVC_CTRL_GET_MAX | UVC_CTRL_GET_RES | \
+	UVC_CTRL_GET_DEF)
 
 struct uvc_menu_info {
 	uint32_t value;

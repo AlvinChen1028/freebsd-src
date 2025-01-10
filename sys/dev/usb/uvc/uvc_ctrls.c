@@ -81,313 +81,313 @@ static const struct uvc_ctrl_info uvc_ctrls[] = {
 		.selector	= UVC_PU_BRIGHTNESS_CONTROL,
 		.index		= 0,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_CONTRAST_CONTROL,
 		.index		= 1,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_HUE_CONTROL,
 		.index		= 2,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_SATURATION_CONTROL,
 		.index		= 3,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_SHARPNESS_CONTROL,
 		.index		= 4,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_GAMMA_CONTROL,
 		.index		= 5,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_TEMPERATURE_CONTROL,
 		.index		= 6,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_COMPONENT_CONTROL,
 		.index		= 7,
 		.size		= 4,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_BACKLIGHT_COMPENSATION_CONTROL,
 		.index		= 8,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_GAIN_CONTROL,
 		.index		= 9,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_POWER_LINE_FREQUENCY_CONTROL,
 		.index		= 10,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_HUE_AUTO_CONTROL,
 		.index		= 11,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_TEMPERATURE_AUTO_CONTROL,
 		.index		= 12,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_COMPONENT_AUTO_CONTROL,
 		.index		= 13,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_DIGITAL_MULTIPLIER_CONTROL,
 		.index		= 14,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_DIGITAL_MULTIPLIER_LIMIT_CONTROL,
 		.index		= 15,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_ANALOG_VIDEO_STANDARD_CONTROL,
 		.index		= 16,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_GET_CUR,
+		.flags		= UVC_CTRL_GET_CUR,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_ANALOG_LOCK_STATUS_CONTROL,
 		.index		= 17,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_GET_CUR,
+		.flags		= UVC_CTRL_GET_CUR,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_SCANNING_MODE_CONTROL,
 		.index		= 0,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_AE_MODE_CONTROL,
 		.index		= 1,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_GET_RES
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_GET_RES
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_AE_PRIORITY_CONTROL,
 		.index		= 2,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_EXPOSURE_TIME_ABSOLUTE_CONTROL,
 		.index		= 3,
 		.size		= 4,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_EXPOSURE_TIME_RELATIVE_CONTROL,
 		.index		= 4,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_ABSOLUTE_CONTROL,
 		.index		= 5,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_RELATIVE_CONTROL,
 		.index		= 6,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
-				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
-				| UVC_CTRL_FL_GET_DEF
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_MIN
+				| UVC_CTRL_GET_MAX | UVC_CTRL_GET_RES
+				| UVC_CTRL_GET_DEF
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_IRIS_ABSOLUTE_CONTROL,
 		.index		= 7,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_IRIS_RELATIVE_CONTROL,
 		.index		= 8,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ZOOM_ABSOLUTE_CONTROL,
 		.index		= 9,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ZOOM_RELATIVE_CONTROL,
 		.index		= 10,
 		.size		= 3,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
-				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
-				| UVC_CTRL_FL_GET_DEF
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_MIN
+				| UVC_CTRL_GET_MAX | UVC_CTRL_GET_RES
+				| UVC_CTRL_GET_DEF
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PANTILT_ABSOLUTE_CONTROL,
 		.index		= 11,
 		.size		= 8,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PANTILT_RELATIVE_CONTROL,
 		.index		= 12,
 		.size		= 4,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ROLL_ABSOLUTE_CONTROL,
 		.index		= 13,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR
-				| UVC_CTRL_FL_GET_RANGE
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR
+				| UVC_CTRL_GET_RANGE
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ROLL_RELATIVE_CONTROL,
 		.index		= 14,
 		.size		= 2,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
-				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
-				| UVC_CTRL_FL_GET_DEF
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_MIN
+				| UVC_CTRL_GET_MAX | UVC_CTRL_GET_RES
+				| UVC_CTRL_GET_DEF
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_AUTO_CONTROL,
 		.index		= 17,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_GET_DEF | UVC_CTRL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PRIVACY_CONTROL,
 		.index		= 18,
 		.size		= 1,
-		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
-				| UVC_CTRL_FL_RESTORE
-				| UVC_CTRL_FL_AUTO_UPDATE,
+		.flags		= UVC_CTRL_SET_CUR | UVC_CTRL_GET_CUR
+				| UVC_CTRL_RESTORE
+				| UVC_CTRL_AUTO_UPDATE,
 	},
 };
 
