@@ -224,45 +224,50 @@ uvc_v4l2_cropcap(struct uvc_drv_video *v, void *addr)
 
 void
 uvc_simple_frac(uint32_t *numerator, uint32_t *denominator,
-	uint32_t n_terms, uint32_t threshold)
+	uint32_t max_iters, uint32_t threshold)
 {
-	uint32_t *p;
-	uint32_t x, y, r;
-	uint32_t i, n;
+	uint32_t *coeff;
+	uint32_t best_den, best_num, remainder;
+	uint32_t i, j;
 
-	p = (uint32_t *)malloc(n_terms * sizeof(uint32_t),
+	 if (!numerator || !denominator ||
+	     *denominator == 0 || max_iters == 0) {
+		 return;
+	 }
+
+	coeff = (uint32_t *)malloc(max_iters * sizeof(uint32_t),
 		M_UVC, M_ZERO | M_WAITOK);
-	if (p == 0)
+	if (coeff == NULL)
 		return;
 
-	x = *numerator;
-	y = *denominator;
+	best_den = *numerator;
+	best_num = *denominator;
 
-	for (n = 0; n < n_terms && y != 0; ++n) {
-		p[n] = x / y;
-		if (p[n] >= threshold) {
-			if (n < 2)
-				n++;
+	for (j = 0; j < max_iters && best_num != 0; ++j) {
+		coeff[j] = best_den / best_num;
+		if (coeff[j] >= threshold) {
+			if (j < 2)
+				j++;
 			break;
 		}
 
-		r = x - p[n] * y;
-		x = y;
-		y = r;
+		remainder = best_den % best_num;
+		best_den = best_num;
+		best_num = remainder;
 	}
 
-	x = 0;
-	y = 1;
+	best_den = 0;
+	best_num = 1;
 
-	for (i = n; i > 0; --i) {
-		r = y;
-		y = p[i-1] * y + x;
-		x = r;
+	for (i = j; i > 0; --i) {
+		remainder = best_num;
+		best_num = coeff[i-1] * best_num + best_den;
+		best_den = remainder;
 	}
 
-	*numerator = y;
-	*denominator = x;
-	free(p, M_UVC);
+	*numerator = best_num;
+	*denominator = best_den;
+	free(coeff, M_UVC);
 }
 
 static int
@@ -517,7 +522,7 @@ uvc_v4l2_ioctl(struct cdev *dev, u_long cmd, caddr_t data, int fflag,
 		break;
 
 	case VIDIOC_G_CTRL:
-		printf("unsupport ioctl VIDIOC_G_CTRL.\n");
+		printf("aaaaaaaaaaaaaaaaaaaaaaaunsupport ioctl VIDIOC_G_CTRL.\n");
 		ret = EINVAL;
 		break;
 	case VIDIOC_G_STD:

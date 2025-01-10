@@ -163,15 +163,15 @@
 #define UVC_TERM_OUTPUT                 0x8000
 #define UVC_TERM_DIRECTION(term)        ((term)->type & 0x8000)
 
-#define UVC_ENTITY_TYPE(entity)         ((entity)->type & 0x7fff)
-#define UVC_ENTITY_IS_UNIT(entity)      (((entity)->type & 0xff00) == 0)
-#define UVC_ENTITY_IS_TERM(entity)      (((entity)->type & 0xff00) != 0)
-#define UVC_ENTITY_IS_ITERM(entity) \
-	(UVC_ENTITY_IS_TERM(entity) && \
-	((entity)->type & 0x8000) == UVC_TERM_INPUT)
-#define UVC_ENTITY_IS_OTERM(entity) \
-	(UVC_ENTITY_IS_TERM(entity) && \
-	((entity)->type & 0x8000) == UVC_TERM_OUTPUT)
+#define UVC_ENT_TYPE(ent)		((ent)->type & 0x7fff)
+#define UVC_ENT_IS_UNIT(ent)		(((ent)->type & 0xff00) == 0)
+#define UVC_ENT_IS_TERM(ent)		(((ent)->type & 0xff00) != 0)
+#define UVC_ENT_IS_ITERM(ent) \
+	(UVC_ENT_IS_TERM(ent) && \
+	((ent)->type & 0x8000) == UVC_TERM_INPUT)
+#define UVC_ENT_IS_OTERM(ent) \
+	(UVC_ENT_IS_TERM(ent) && \
+	((ent)->type & 0x8000) == UVC_TERM_OUTPUT)
 
 /* ------------------------------------------------------------------------
  * GUIDs
@@ -438,39 +438,36 @@ struct uvc_data_payload_header {
  */
 
 /* Data types for UVC control data */
-#define UVC_CTRL_DATA_TYPE_RAW          0
-#define UVC_CTRL_DATA_TYPE_SIGNED       1
-#define UVC_CTRL_DATA_TYPE_UNSIGNED     2
-#define UVC_CTRL_DATA_TYPE_BOOLEAN      3
-#define UVC_CTRL_DATA_TYPE_ENUM         4
-#define UVC_CTRL_DATA_TYPE_BITMASK      5
+#define UVC_CTRL_DATA_RAW          0
+#define UVC_CTRL_DATA_SIGNED       1
+#define UVC_CTRL_DATA_UNSIGNED     2
+#define UVC_CTRL_DATA_BOOLEAN      3
+#define UVC_CTRL_DATA_ENUM         4
+#define UVC_CTRL_DATA_BITMASK      5
 
 /* Control flags */
-#define UVC_CTRL_FLAG_SET_CUR           (1 << 0)
-#define UVC_CTRL_FLAG_GET_CUR           (1 << 1)
-#define UVC_CTRL_FLAG_GET_MIN           (1 << 2)
-#define UVC_CTRL_FLAG_GET_MAX           (1 << 3)
-#define UVC_CTRL_FLAG_GET_RES           (1 << 4)
-#define UVC_CTRL_FLAG_GET_DEF           (1 << 5)
-/* Control should be saved at suspend and restored at resume. */
-#define UVC_CTRL_FLAG_RESTORE           (1 << 6)
-/* Control can be updated by the camera. */
-#define UVC_CTRL_FLAG_AUTO_UPDATE       (1 << 7)
-/* Control supports asynchronous reporting */
-#define UVC_CTRL_FLAG_ASYNCHRONOUS      (1 << 8)
+#define UVC_CTRL_FL_SET_CUR           0x0001
+#define UVC_CTRL_FL_GET_CUR           0x0002
+#define UVC_CTRL_FL_GET_MIN           0x0004
+#define UVC_CTRL_FL_GET_MAX           0x0008
+#define UVC_CTRL_FL_GET_RES           0x0010
+#define UVC_CTRL_FL_GET_DEF           0x0020
+#define UVC_CTRL_FL_RESTORE           0x0040
+#define UVC_CTRL_FL_AUTO_UPDATE       0x0080
+#define UVC_CTRL_FL_ASYNCHRONOUS	0x0100
 
-#define UVC_CTRL_FLAG_GET_RANGE \
-	(UVC_CTRL_FLAG_GET_CUR | UVC_CTRL_FLAG_GET_MIN | \
-	UVC_CTRL_FLAG_GET_MAX | UVC_CTRL_FLAG_GET_RES | \
-	UVC_CTRL_FLAG_GET_DEF)
+#define UVC_CTRL_FL_GET_RANGE \
+	(UVC_CTRL_FL_GET_CUR | UVC_CTRL_FL_GET_MIN | \
+	UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES | \
+	UVC_CTRL_FL_GET_DEF)
 
 struct uvc_menu_info {
 	uint32_t value;
 	uint8_t name[32];
 };
 
-struct uvc_control_info {
-	STAILQ_HEAD(, uvc_control_mapping) mappings;
+struct uvc_ctrl_info {
+	STAILQ_HEAD(, uvc_ctrl_mapping) mappings;
 	uint8_t entity[16];
 	uint8_t index;       /* Bit index in bmControls */
 	uint8_t selector;
@@ -478,9 +475,8 @@ struct uvc_control_info {
 	uint32_t flags;
 };
 
-struct uvc_control_mapping {
-	STAILQ_ENTRY(uvc_control_mapping) link;
-	//struct list_head ev_subs;
+struct uvc_ctrl_mapping {
+	STAILQ_ENTRY(uvc_ctrl_mapping) link;
 
 	uint32_t id;
 	uint8_t name[32];
@@ -492,22 +488,22 @@ struct uvc_control_mapping {
 	uint32_t data_type;
 	struct uvc_menu_info *menu_info;
 	uint32_t menu_count;
-	uint32_t master_id;
-	int32_t master_manual;
-	uint32_t slave_ids[2];
-	int32_t (*get)(struct uvc_control_mapping *mapping, uint8_t query,
+	uint32_t main_id;
+	int32_t main_manual;
+	uint32_t sub_ids[2];
+	int32_t (*get)(struct uvc_ctrl_mapping *mapping, uint8_t query,
 		       const uint8_t *data);
-	void (*set)(struct uvc_control_mapping *mapping, int32_t value,
+	void (*set)(struct uvc_ctrl_mapping *mapping, int32_t value,
 		    uint8_t *data);
 };
 
 
 struct uvc_control {
 	struct uvc_drv_entity *entity;
-	struct uvc_control_info info;
+	struct uvc_ctrl_info info;
 	uint8_t index; /*
 			*  Used to match the uvc_control entry
-			*  with a uvc_control_info
+			*  with a uvc_ctrl_info
 			*/
 	uint8_t dirty:1,
 		loaded:1,
@@ -745,8 +741,8 @@ int uvc_drv_set_streampar(struct uvc_drv_video *v, struct v4l2_streamparm *a);
 int uvc_drv_get_selection(struct uvc_drv_video *v, struct v4l2_selection *sel);
 int uvc_drv_get_pixelaspect(void);
 //uvc controls
-int uvc_ctrl_init_device(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls);
-void uvc_ctrl_cleanup_mappings(struct uvc_control *ctrl);
+int uvc_ctrl_init_dev(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls);
+void uvc_ctrl_destory_mappings(struct uvc_control *ctrl);
 int uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 			struct v4l2_queryctrl *v4l2_ctrl);
 int uvc_query_v4l2_menu(struct uvc_drv_video *video,

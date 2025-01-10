@@ -74,336 +74,336 @@
  * Controls
  */
 
-static const struct uvc_control_info uvc_ctrls[] = {
+static const struct uvc_ctrl_info uvc_ctrls[] = {
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_BRIGHTNESS_CONTROL,
 		.index		= 0,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_CONTRAST_CONTROL,
 		.index		= 1,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_HUE_CONTROL,
 		.index		= 2,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_SATURATION_CONTROL,
 		.index		= 3,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_SHARPNESS_CONTROL,
 		.index		= 4,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_GAMMA_CONTROL,
 		.index		= 5,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_TEMPERATURE_CONTROL,
 		.index		= 6,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_COMPONENT_CONTROL,
 		.index		= 7,
 		.size		= 4,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_BACKLIGHT_COMPENSATION_CONTROL,
 		.index		= 8,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_GAIN_CONTROL,
 		.index		= 9,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_POWER_LINE_FREQUENCY_CONTROL,
 		.index		= 10,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_HUE_AUTO_CONTROL,
 		.index		= 11,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_TEMPERATURE_AUTO_CONTROL,
 		.index		= 12,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_WHITE_BALANCE_COMPONENT_AUTO_CONTROL,
 		.index		= 13,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_DIGITAL_MULTIPLIER_CONTROL,
 		.index		= 14,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_DIGITAL_MULTIPLIER_LIMIT_CONTROL,
 		.index		= 15,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_ANALOG_VIDEO_STANDARD_CONTROL,
 		.index		= 16,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_GET_CUR,
+		.flags		= UVC_CTRL_FL_GET_CUR,
 	},
 	{
 		.entity		= UVC_GUID_UVC_PROCESSING,
 		.selector	= UVC_PU_ANALOG_LOCK_STATUS_CONTROL,
 		.index		= 17,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_GET_CUR,
+		.flags		= UVC_CTRL_FL_GET_CUR,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_SCANNING_MODE_CONTROL,
 		.index		= 0,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_AE_MODE_CONTROL,
 		.index		= 1,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_GET_RES
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_GET_RES
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_AE_PRIORITY_CONTROL,
 		.index		= 2,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_EXPOSURE_TIME_ABSOLUTE_CONTROL,
 		.index		= 3,
 		.size		= 4,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_EXPOSURE_TIME_RELATIVE_CONTROL,
 		.index		= 4,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_ABSOLUTE_CONTROL,
 		.index		= 5,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_RELATIVE_CONTROL,
 		.index		= 6,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_MIN
-				| UVC_CTRL_FLAG_GET_MAX | UVC_CTRL_FLAG_GET_RES
-				| UVC_CTRL_FLAG_GET_DEF
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
+				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
+				| UVC_CTRL_FL_GET_DEF
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_IRIS_ABSOLUTE_CONTROL,
 		.index		= 7,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_IRIS_RELATIVE_CONTROL,
 		.index		= 8,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ZOOM_ABSOLUTE_CONTROL,
 		.index		= 9,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ZOOM_RELATIVE_CONTROL,
 		.index		= 10,
 		.size		= 3,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_MIN
-				| UVC_CTRL_FLAG_GET_MAX | UVC_CTRL_FLAG_GET_RES
-				| UVC_CTRL_FLAG_GET_DEF
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
+				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
+				| UVC_CTRL_FL_GET_DEF
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PANTILT_ABSOLUTE_CONTROL,
 		.index		= 11,
 		.size		= 8,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PANTILT_RELATIVE_CONTROL,
 		.index		= 12,
 		.size		= 4,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ROLL_ABSOLUTE_CONTROL,
 		.index		= 13,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR
-				| UVC_CTRL_FLAG_GET_RANGE
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR
+				| UVC_CTRL_FL_GET_RANGE
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_ROLL_RELATIVE_CONTROL,
 		.index		= 14,
 		.size		= 2,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_MIN
-				| UVC_CTRL_FLAG_GET_MAX | UVC_CTRL_FLAG_GET_RES
-				| UVC_CTRL_FLAG_GET_DEF
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_MIN
+				| UVC_CTRL_FL_GET_MAX | UVC_CTRL_FL_GET_RES
+				| UVC_CTRL_FL_GET_DEF
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_FOCUS_AUTO_CONTROL,
 		.index		= 17,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_GET_DEF | UVC_CTRL_FLAG_RESTORE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_GET_DEF | UVC_CTRL_FL_RESTORE,
 	},
 	{
 		.entity		= UVC_GUID_UVC_CAMERA,
 		.selector	= UVC_CT_PRIVACY_CONTROL,
 		.index		= 18,
 		.size		= 1,
-		.flags		= UVC_CTRL_FLAG_SET_CUR | UVC_CTRL_FLAG_GET_CUR
-				| UVC_CTRL_FLAG_RESTORE
-				| UVC_CTRL_FLAG_AUTO_UPDATE,
+		.flags		= UVC_CTRL_FL_SET_CUR | UVC_CTRL_FL_GET_CUR
+				| UVC_CTRL_FL_RESTORE
+				| UVC_CTRL_FL_AUTO_UPDATE,
 	},
 };
 
-static struct uvc_menu_info power_line_frequency_controls[] = {
+static struct uvc_menu_info power_line_freq_ctrls[] = {
 	{ 0, "Disabled" },
 	{ 1, "50 Hz" },
 	{ 2, "60 Hz" },
 };
 
-static struct uvc_menu_info exposure_auto_controls[] = {
+static struct uvc_menu_info exposure_auto_ctrls[] = {
 	{ 2, "Auto Mode" },
 	{ 1, "Manual Mode" },
 	{ 4, "Shutter Priority Mode" },
 	{ 8, "Aperture Priority Mode" },
 };
 
-static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
+static const struct uvc_ctrl_mapping uvc_ctrl_mappings[] = {
 	{
 		.id		= V4L2_CID_BRIGHTNESS,
 		.name		= "Brightness",
@@ -412,7 +412,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_CONTRAST,
@@ -422,7 +422,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_HUE,
@@ -432,9 +432,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		.master_id	= V4L2_CID_HUE_AUTO,
-		.master_manual	= 0,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
+		.main_id	= V4L2_CID_HUE_AUTO,
+		.main_manual	= 0,
 	},
 	{
 		.id		= V4L2_CID_SATURATION,
@@ -444,7 +444,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_SHARPNESS,
@@ -454,7 +454,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_GAMMA,
@@ -464,7 +464,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_BACKLIGHT_COMPENSATION,
@@ -474,7 +474,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_GAIN,
@@ -484,7 +484,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_POWER_LINE_FREQUENCY,
@@ -494,9 +494,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 2,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_MENU,
-		.data_type	= UVC_CTRL_DATA_TYPE_ENUM,
-		.menu_info	= power_line_frequency_controls,
-		.menu_count	= ARRAY_SIZE(power_line_frequency_controls),
+		.data_type	= UVC_CTRL_DATA_ENUM,
+		.menu_info	= power_line_freq_ctrls,
+		.menu_count	= ARRAY_SIZE(power_line_freq_ctrls),
 	},
 	{
 		.id		= V4L2_CID_HUE_AUTO,
@@ -506,8 +506,8 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
-		.slave_ids	= { V4L2_CID_HUE, },
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
+		.sub_ids	= { V4L2_CID_HUE, },
 	},
 	{
 		.id		= V4L2_CID_EXPOSURE_AUTO,
@@ -517,10 +517,10 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 4,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_MENU,
-		.data_type	= UVC_CTRL_DATA_TYPE_BITMASK,
-		.menu_info	= exposure_auto_controls,
-		.menu_count	= ARRAY_SIZE(exposure_auto_controls),
-		.slave_ids	= { V4L2_CID_EXPOSURE_ABSOLUTE, },
+		.data_type	= UVC_CTRL_DATA_BITMASK,
+		.menu_info	= exposure_auto_ctrls,
+		.menu_count	= ARRAY_SIZE(exposure_auto_ctrls),
+		.sub_ids	= { V4L2_CID_EXPOSURE_ABSOLUTE, },
 	},
 	{
 		.id		= V4L2_CID_EXPOSURE_AUTO_PRIORITY,
@@ -530,7 +530,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
 	},
 	{
 		.id		= V4L2_CID_EXPOSURE_ABSOLUTE,
@@ -540,9 +540,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 32,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
-		.master_id	= V4L2_CID_EXPOSURE_AUTO,
-		.master_manual	= V4L2_EXPOSURE_MANUAL,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
+		.main_id	= V4L2_CID_EXPOSURE_AUTO,
+		.main_manual	= V4L2_EXPOSURE_MANUAL,
 	},
 	{
 		.id		= V4L2_CID_AUTO_WHITE_BALANCE,
@@ -552,8 +552,8 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
-		.slave_ids	= { V4L2_CID_WHITE_BALANCE_TEMPERATURE, },
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
+		.sub_ids	= { V4L2_CID_WHITE_BALANCE_TEMPERATURE, },
 	},
 	{
 		.id		= V4L2_CID_WHITE_BALANCE_TEMPERATURE,
@@ -563,9 +563,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
-		.master_id	= V4L2_CID_AUTO_WHITE_BALANCE,
-		.master_manual	= 0,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
+		.main_id	= V4L2_CID_AUTO_WHITE_BALANCE,
+		.main_manual	= 0,
 	},
 	{
 		.id		= V4L2_CID_AUTO_WHITE_BALANCE,
@@ -575,8 +575,8 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
-		.slave_ids	= { V4L2_CID_BLUE_BALANCE,
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
+		.sub_ids	= { V4L2_CID_BLUE_BALANCE,
 				    V4L2_CID_RED_BALANCE },
 	},
 	{
@@ -587,9 +587,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		.master_id	= V4L2_CID_AUTO_WHITE_BALANCE,
-		.master_manual	= 0,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
+		.main_id	= V4L2_CID_AUTO_WHITE_BALANCE,
+		.main_manual	= 0,
 	},
 	{
 		.id		= V4L2_CID_RED_BALANCE,
@@ -599,9 +599,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 16,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		.master_id	= V4L2_CID_AUTO_WHITE_BALANCE,
-		.master_manual	= 0,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
+		.main_id	= V4L2_CID_AUTO_WHITE_BALANCE,
+		.main_manual	= 0,
 	},
 	{
 		.id		= V4L2_CID_FOCUS_ABSOLUTE,
@@ -611,9 +611,9 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
-		.master_id	= V4L2_CID_FOCUS_AUTO,
-		.master_manual	= 0,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
+		.main_id	= V4L2_CID_FOCUS_AUTO,
+		.main_manual	= 0,
 	},
 	{
 		.id		= V4L2_CID_FOCUS_AUTO,
@@ -623,8 +623,8 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
-		.slave_ids	= { V4L2_CID_FOCUS_ABSOLUTE, },
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
+		.sub_ids	= { V4L2_CID_FOCUS_ABSOLUTE, },
 	},
 	{
 		.id		= V4L2_CID_IRIS_ABSOLUTE,
@@ -634,7 +634,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_IRIS_RELATIVE,
@@ -644,7 +644,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 8,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_ZOOM_ABSOLUTE,
@@ -654,7 +654,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_UNSIGNED,
+		.data_type	= UVC_CTRL_DATA_UNSIGNED,
 	},
 	{
 		.id		= V4L2_CID_ZOOM_CONTINUOUS,
@@ -664,9 +664,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 0,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		//.get		= uvc_ctrl_get_zoom,
-		//.set		= uvc_ctrl_set_zoom,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_PAN_ABSOLUTE,
@@ -676,7 +674,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 32,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_TILT_ABSOLUTE,
@@ -686,7 +684,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 32,
 		.offset		= 32,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_PAN_SPEED,
@@ -696,9 +694,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		//.get		= uvc_ctrl_get_rel_speed,
-		//.set		= uvc_ctrl_set_rel_speed,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_TILT_SPEED,
@@ -708,9 +704,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 16,
 		.offset		= 16,
 		.v4l2_type	= V4L2_CTRL_TYPE_INTEGER,
-		.data_type	= UVC_CTRL_DATA_TYPE_SIGNED,
-		//.get		= uvc_ctrl_get_rel_speed,
-		//.set		= uvc_ctrl_set_rel_speed,
+		.data_type	= UVC_CTRL_DATA_SIGNED,
 	},
 	{
 		.id		= V4L2_CID_PRIVACY,
@@ -720,37 +714,43 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
 		.size		= 1,
 		.offset		= 0,
 		.v4l2_type	= V4L2_CTRL_TYPE_BOOLEAN,
-		.data_type	= UVC_CTRL_DATA_TYPE_BOOLEAN,
+		.data_type	= UVC_CTRL_DATA_BOOLEAN,
 	},
 };
 
+#define UVC_BITMASK	0x7
+#define UVC_BITSHIFT	0x3
+#define UVC_VALMASK	0x1
+
 static unsigned int
-uvc_test_bit(const uint8_t *data, int bit)
+uvc_test_bit(const uint8_t *buf, int b)
 {
-	return (data[bit >> 3] >> (bit & 7)) & 1;
+	return (buf[b >> UVC_BITSHIFT] >>
+		(b & UVC_BITMASK)) & UVC_VALMASK;
 }
 
 static unsigned int
-uvc_ctrl_calc_control_num(const uint8_t *bmControls, uint8_t bControlSize)
+uvc_ctrl_count_control(const uint8_t *bmCtrls, uint8_t bCtrlSize)
 {
 	int i = 0;
 	unsigned int count = 0;
-	const uint8_t *data = bmControls;
+	const uint8_t *data = bmCtrls;
 
-	if (data == NULL || bControlSize == 0)
+	if (data == NULL || bCtrlSize == 0)
 		return 0;
 
-	for (; i < bControlSize * 8; i++) {
-		if ((data[i >> 3] >> (i & 7)) & 1)
+	for (i = 0; i < bCtrlSize * 8; i++) {
+		if ((data[i >> UVC_BITSHIFT] >>
+		     (i & UVC_BITMASK)) & UVC_VALMASK)
 			count++;
 	}
 	return count;
 }
 static int
-__uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
-		      struct uvc_control *ctrl,
-		      struct uvc_control_mapping *mapping,
-		      struct v4l2_queryctrl *v4l2_ctrl)
+uvc_query_v4l2_ctrl_sub(struct uvc_drv_video *video,
+			struct uvc_control *ctrl,
+			struct uvc_ctrl_mapping *mapping,
+			struct v4l2_queryctrl *v4l2_ctrl)
 {
 	int i = 0;
 	struct uvc_menu_info *menu = NULL;
@@ -758,10 +758,23 @@ __uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 	memset(v4l2_ctrl, 0, sizeof(*v4l2_ctrl));
 	v4l2_ctrl->id = mapping->id;
 	v4l2_ctrl->type = mapping->v4l2_type;
-	strlcpy(v4l2_ctrl->name, mapping->name, sizeof(v4l2_ctrl->name));
+	strlcpy(v4l2_ctrl->name, mapping->name,
+		sizeof(v4l2_ctrl->name));
 	v4l2_ctrl->flags = 0;
 
 	switch (mapping->v4l2_type) {
+	case V4L2_CTRL_TYPE_BOOLEAN:
+		v4l2_ctrl->minimum = 0;
+		v4l2_ctrl->maximum = 1;
+		v4l2_ctrl->step = 1;
+		goto end;
+
+	case V4L2_CTRL_TYPE_BUTTON:
+		v4l2_ctrl->minimum = 0;
+		v4l2_ctrl->maximum = 0;
+		v4l2_ctrl->step = 0;
+		goto end;
+
 	case V4L2_CTRL_TYPE_MENU:
 		v4l2_ctrl->minimum = 0;
 		v4l2_ctrl->maximum = mapping->menu_count - 1;
@@ -769,25 +782,13 @@ __uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 
 		menu = mapping->menu_info;
 		for (i = 0; i < mapping->menu_count; ++i, ++menu) {
-			if (menu->value == v4l2_ctrl->default_value) {
+			if (menu->value ==
+			    v4l2_ctrl->default_value) {
 				v4l2_ctrl->default_value = i;
 				break;
 			}
 		}
-
-		return 0;
-
-	case V4L2_CTRL_TYPE_BOOLEAN:
-		v4l2_ctrl->minimum = 0;
-		v4l2_ctrl->maximum = 1;
-		v4l2_ctrl->step = 1;
-		return 0;
-
-	case V4L2_CTRL_TYPE_BUTTON:
-		v4l2_ctrl->minimum = 0;
-		v4l2_ctrl->maximum = 0;
-		v4l2_ctrl->step = 0;
-		return 0;
+		goto end;
 
 	default:
 		break;
@@ -795,38 +796,38 @@ __uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 
 	/*todo*/
 	DPRINTF("WARNING __TO_BE_IMPLEMENT__ other par %s\n", __func__);
-
+end:
 	return 0;
 }
 
 static void
-__uvc_find_control(struct uvc_drv_entity *entity, uint32_t v4l2_id,
-		   struct uvc_control_mapping **mapping,
-		   struct uvc_control **control,
-		   int next)
+uvc_search_control_sub(struct uvc_drv_entity *ent, uint32_t v4l2_id,
+		   struct uvc_ctrl_mapping **mapping,
+		   struct uvc_control **control, int next)
 {
 	struct uvc_control *ctrl = NULL;
-	struct uvc_control_mapping *map = NULL, *tmp = NULL;
-	unsigned int i;
+	struct uvc_ctrl_mapping *map = NULL, *tmp = NULL;
+	uint8_t i = 0;
 
-	if (entity == NULL)
+	if (!ent)
 		return;
 
-	for (i = 0; i < entity->ncontrols; ++i) {
-		ctrl = &entity->controls[i];
+	for (; i < ent->ncontrols; ++i) {
+		ctrl = &ent->controls[i];
 
 		if (!ctrl->initialized)
 			continue;
 
 		STAILQ_FOREACH_SAFE(map, &ctrl->info.mappings, link, tmp) {
 			if ((map->id == v4l2_id) && !next) {
-				*control = ctrl;
 				*mapping = map;
+				*control = ctrl;
 				return;
 			}
 
-			if ((*mapping == NULL || (*mapping)->id > map->id) &&
-				(map->id > v4l2_id) && next) {
+			if ((*mapping == NULL ||
+			     (*mapping)->id > map->id) &&
+			     (map->id > v4l2_id) && next) {
 				*control = ctrl;
 				*mapping = map;
 			}
@@ -835,12 +836,12 @@ __uvc_find_control(struct uvc_drv_entity *entity, uint32_t v4l2_id,
 }
 
 static struct uvc_control *
-uvc_find_control(struct uvc_drv_ctrl *ctrls,
+uvc_ctrl_search_control(struct uvc_drv_ctrl *ctrls,
 		 uint32_t v4l2_id,
-		 struct uvc_control_mapping **mapping)
+		 struct uvc_ctrl_mapping **mapping)
 {
 	struct uvc_control *ctrl = NULL;
-	struct uvc_drv_entity *entity = NULL, *tmp = NULL;
+	struct uvc_drv_entity *ent = NULL, *tmp = NULL;
 	int next = v4l2_id & V4L2_CTRL_FLAG_NEXT_CTRL;
 
 	*mapping = NULL;
@@ -848,65 +849,72 @@ uvc_find_control(struct uvc_drv_ctrl *ctrls,
 	/* Mask the query flags. */
 	v4l2_id &= V4L2_CTRL_ID_MASK;
 
-	/* Find the control. */
-	STAILQ_FOREACH_SAFE(entity, &ctrls->entities, link, tmp) {
-		__uvc_find_control(entity, v4l2_id, mapping, &ctrl, next);
+	STAILQ_FOREACH_SAFE(ent, &ctrls->entities, link, tmp) {
+		uvc_search_control_sub(ent, v4l2_id, mapping, &ctrl, next);
 		if (ctrl && !next)
 			return ctrl;
 	}
 
 	if (ctrl == NULL && !next)
-		DPRINTF("Control 0x%08x not found.\n", v4l2_id);
+		DPRINTF("Ctrl 0x%08x not found.\n", v4l2_id);
 
 	return ctrl;
 }
 
 static const uint8_t uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
 static const uint8_t uvc_camera_guid[16] = UVC_GUID_UVC_CAMERA;
-static const uint8_t uvc_media_transport_input_guid[16] =
+static const uint8_t uvc_media_trans_input_guid[16] =
 					UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
 
 static int
-uvc_entity_match_guid(const struct uvc_drv_entity *entity,
+uvc_ent_match_guid(const struct uvc_drv_entity *ent,
 				 const uint8_t guid[16])
 {
-	switch (UVC_ENTITY_TYPE(entity)) {
+	int ret = 0;
+
+	switch (UVC_ENT_TYPE(ent)) {
 	case UVC_ITT_CAMERA:
-		return memcmp(uvc_camera_guid, guid, 16) == 0;
+		ret = memcmp(uvc_camera_guid, guid, 16) == 0;
+		break;
 
 	case UVC_ITT_MEDIA_TRANSPORT_INPUT:
-		return memcmp(uvc_media_transport_input_guid, guid, 16) == 0;
+		ret = memcmp(uvc_media_trans_input_guid, guid, 16) == 0;
+		break;
 
 	case UDESCSUB_VC_PROCESSING_UNIT:
-		return memcmp(uvc_processing_guid, guid, 16) == 0;
+		ret = memcmp(uvc_processing_guid, guid, 16) == 0;
+		break;
 
 	case UDESCSUB_VC_EXTENSION_UNIT:
-		return memcmp(entity->extension.guidExtensionCode,
+		ret = memcmp(ent->extension.guidExtensionCode,
 			      guid, 16) == 0;
+		break;
 
 	default:
 		return 0;
 	}
+
+	return ret;
 }
 
 static int
-uvc_ctrl_add_info(struct uvc_control *ctrl, const struct uvc_control_info *info)
+uvc_ctrl_init_info(struct uvc_control *ctrl, const struct uvc_ctrl_info *info)
 {
 	int ret = 0;
 
 	ctrl->info = *info;
 	STAILQ_INIT(&ctrl->info.mappings);
 
-	/* Allocate an array to save control values (cur, def, max, etc.) */
-	ctrl->uvc_data = malloc(ctrl->info.size * UVC_CTRL_DATA_LAST + 1,
+	ctrl->uvc_data = malloc(ctrl->info.size *
+				UVC_CTRL_DATA_LAST + 1,
 				M_UVC, M_ZERO | M_WAITOK);
 	if (ctrl->uvc_data == NULL) {
 		ret = ENOMEM;
-		goto done;
+		goto end;
 	}
 	ctrl->initialized = 1;
 
-done:
+end:
 	if (ret < 0)
 		free(ctrl->uvc_data, M_UVC);
 	return ret;
@@ -924,10 +932,10 @@ uvc_memdup(const void *src, size_t len)
 }
 
 static int
-__uvc_ctrl_add_mapping(struct uvc_control *ctrl,
-		       const struct uvc_control_mapping *mapping)
+uvc_ctrl_init_mapping_sub(struct uvc_control *ctrl,
+		       const struct uvc_ctrl_mapping *mapping)
 {
-	struct uvc_control_mapping *map;
+	struct uvc_ctrl_mapping *map;
 	unsigned int size;
 
 	map = uvc_memdup(mapping, sizeof(*mapping));
@@ -961,20 +969,20 @@ static void
 uvc_ctrl_init_ctrl(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls,
 		   struct uvc_control *ctrl)
 {
-	const struct uvc_control_info *info = uvc_ctrls;
-	const struct uvc_control_info *iend = info + ARRAY_SIZE(uvc_ctrls);
-	const struct uvc_control_mapping *mapping = uvc_ctrl_mappings;
-	const struct uvc_control_mapping *mend =
+	const struct uvc_ctrl_info *info = uvc_ctrls;
+	const struct uvc_ctrl_info *ie = info + ARRAY_SIZE(uvc_ctrls);
+	const struct uvc_ctrl_mapping *mapping = uvc_ctrl_mappings;
+	const struct uvc_ctrl_mapping *me =
 				mapping + ARRAY_SIZE(uvc_ctrl_mappings);
 
 	/*like linux does*/
-	if (UVC_ENTITY_TYPE(ctrl->entity) == UDESCSUB_VC_EXTENSION_UNIT)
+	if (UVC_ENT_TYPE(ctrl->entity) == UDESCSUB_VC_EXTENSION_UNIT)
 		return;
 
-	for (; info < iend; ++info) {
-		if (uvc_entity_match_guid(ctrl->entity, info->entity) &&
+	for (; info < ie; ++info) {
+		if (uvc_ent_match_guid(ctrl->entity, info->entity) &&
 		    ctrl->index == info->index) {
-			uvc_ctrl_add_info(ctrl, info);
+			uvc_ctrl_init_info(ctrl, info);
 			break;
 		}
 	}
@@ -982,56 +990,57 @@ uvc_ctrl_init_ctrl(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls,
 	if (!ctrl->initialized)
 		return;
 
-	for (; mapping < mend; ++mapping) {
-		if (uvc_entity_match_guid(ctrl->entity, mapping->entity) &&
+	for (; mapping < me; ++mapping) {
+		if (uvc_ent_match_guid(ctrl->entity, mapping->entity) &&
 		    ctrl->info.selector == mapping->selector) {
-			__uvc_ctrl_add_mapping(ctrl, mapping);
+			uvc_ctrl_init_mapping_sub(ctrl, mapping);
 		}
 	}
 }
 
 int
-uvc_ctrl_init_device(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls)
+uvc_ctrl_init_dev(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls)
 {
-	struct uvc_drv_entity *entity, *tmp;
+	struct uvc_drv_entity *ent, *tmp;
 	struct uvc_control *ctrl = NULL;
-	unsigned int bControlSize = 0, ncontrols = 0;
-	uint8_t *bmControls = NULL;
+	uint8_t bCtrlSize = 0;
+	uint32_t nctrls = 0;
+	uint8_t *bmCtrls = NULL;
+	uint8_t i = 0;
 
 	if (!ctrls) {
 		return EINVAL;
 	}
 
-	STAILQ_FOREACH_SAFE(entity, &ctrls->entities, link, tmp) {
-		unsigned int i = 0;
+	STAILQ_FOREACH_SAFE(ent, &ctrls->entities, link, tmp) {
 
-		if (UVC_ENTITY_TYPE(entity) == UDESCSUB_VC_EXTENSION_UNIT) {
-			bmControls = entity->extension.bmControls;
-			bControlSize = entity->extension.bControlSize;
-		} else if (UVC_ENTITY_TYPE(entity) ==
+		if (UVC_ENT_TYPE(ent) == UDESCSUB_VC_EXTENSION_UNIT) {
+			bmCtrls = ent->extension.bmControls;
+			bCtrlSize = ent->extension.bControlSize;
+		} else if (UVC_ENT_TYPE(ent) ==
 			   UDESCSUB_VC_PROCESSING_UNIT) {
-			bmControls = entity->processing.bmControls;
-			bControlSize = entity->processing.bControlSize;
-		} else if (UVC_ENTITY_TYPE(entity) == UVC_ITT_CAMERA) {
-			bmControls = entity->camera.bmControls;
-			bControlSize = entity->camera.bControlSize;
+			bmCtrls = ent->processing.bmControls;
+			bCtrlSize = ent->processing.bControlSize;
+		} else if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
+			bmCtrls = ent->camera.bmControls;
+			bCtrlSize = ent->camera.bControlSize;
 		} else
 			continue;
 
-		ncontrols = uvc_ctrl_calc_control_num(bmControls, bControlSize);
-		if (ncontrols == 0)
+		nctrls = uvc_ctrl_count_control(bmCtrls, bCtrlSize);
+		if (nctrls == 0)
 			continue;
-		entity->controls = malloc(ncontrols * sizeof(*ctrl),
-					  M_UVC, M_ZERO | M_WAITOK);
-		if (!entity->controls)
+		ent->controls = malloc(nctrls * sizeof(*ctrl),
+					M_UVC, M_ZERO | M_WAITOK);
+		if (!ent->controls)
 			return ENOMEM;
-		entity->ncontrols = ncontrols;
+		ent->ncontrols = nctrls;
 
-		ctrl = entity->controls;
-		for (; i < bControlSize * 8; i++) {
-			if (uvc_test_bit(bmControls, i) == 0)
+		ctrl = ent->controls;
+		for (i = 0; i < bCtrlSize * 8; i++) {
+			if (uvc_test_bit(bmCtrls, i) == 0)
 				continue;
-			ctrl->entity = entity;
+			ctrl->entity = ent;
 			ctrl->index = i;
 			uvc_ctrl_init_ctrl(sc, ctrls, ctrl);
 			ctrl++;
@@ -1042,16 +1051,16 @@ uvc_ctrl_init_device(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls)
 }
 
 void
-uvc_ctrl_cleanup_mappings(struct uvc_control *ctrl)
+uvc_ctrl_destory_mappings(struct uvc_control *ctrl)
 {
-	struct uvc_control_mapping *mapping, *tmp;
+	struct uvc_ctrl_mapping *mapping, *tmp;
 
 	if (!ctrl)
 		return;
 
 	STAILQ_FOREACH_SAFE(mapping, &ctrl->info.mappings, link, tmp) {
-	DPRINTF("removing mapping '%s' to control %pUl/%u.\n",
-		mapping->name, ctrl->info.entity, ctrl->info.selector);
+		DPRINTF("removing mapping '%s' to control %pUl/%u.\n",
+			mapping->name, ctrl->info.entity, ctrl->info.selector);
 		if (mapping->menu_info)
 			free((void *)mapping->menu_info, M_UVC);
 		free(mapping, M_UVC);
@@ -1063,18 +1072,18 @@ uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 		    struct v4l2_queryctrl *v4l2_ctrl)
 {
 	struct uvc_control *ctrl;
-	struct uvc_control_mapping *mapping;
+	struct uvc_ctrl_mapping *mapping;
 	int ret = EINVAL;
 
 	mtx_lock(&video->ctrl->mtx);
 
-	ctrl = uvc_find_control(video->ctrl, v4l2_ctrl->id, &mapping);
+	ctrl = uvc_ctrl_search_control(video->ctrl, v4l2_ctrl->id, &mapping);
 	if (ctrl == NULL) {
 		ret = EINVAL;
 		goto done;
 	}
 
-	ret = __uvc_query_v4l2_ctrl(video, ctrl, mapping, v4l2_ctrl);
+	ret = uvc_query_v4l2_ctrl_sub(video, ctrl, mapping, v4l2_ctrl);
 done:
 	mtx_unlock(&video->ctrl->mtx);
 	return ret;
@@ -1085,7 +1094,7 @@ uvc_query_v4l2_menu(struct uvc_drv_video *video,
 		    struct v4l2_querymenu *qm)
 {
 	struct uvc_control *ctrl;
-	struct uvc_control_mapping *mapping;
+	struct uvc_ctrl_mapping *mapping;
 	int ret = 0;
 	int id = qm->id;
 	int index = qm->index;
@@ -1096,7 +1105,7 @@ uvc_query_v4l2_menu(struct uvc_drv_video *video,
 
 	mtx_lock(&video->ctrl->mtx);
 
-	ctrl = uvc_find_control(video->ctrl, qm->id, &mapping);
+	ctrl = uvc_ctrl_search_control(video->ctrl, qm->id, &mapping);
 	if (ctrl == NULL || mapping->v4l2_type != V4L2_CTRL_TYPE_MENU) {
 		ret = EINVAL;
 		goto done;

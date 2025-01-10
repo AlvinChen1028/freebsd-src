@@ -2145,7 +2145,7 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 		if (!ent)
 			return ENOMEM;
 
-		if (UVC_ENTITY_TYPE(ent) == UVC_ITT_CAMERA) {
+		if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
 			ent->camera.bControlSize = bCsize;
 			ent->camera.bmControls = (uint8_t *)ent + sizeof(*ent);
 			memcpy((void *)&ent->camera.wObjectiveFocalLengthMin,
@@ -2162,7 +2162,7 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 		}
 		if (it_desc->bITerminal != 0) {
 			printf("WARNING: need to get usb string by id\n");
-		} else if (UVC_ENTITY_TYPE(ent) == UVC_ITT_CAMERA) {
+		} else if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
 			snprintf(ent->name, 64, "Camera %u", ent->id);
 		} else
 			snprintf(ent->name, 64, "Input %u", ent->id);
@@ -2358,7 +2358,7 @@ uvc_drv_destroy_ctrl(struct uvc_drv_ctrl *c)
 				if (!ctrl->initialized)
 					continue;
 
-				uvc_ctrl_cleanup_mappings(ctrl);
+				uvc_ctrl_destory_mappings(ctrl);
 				free(ctrl->uvc_data, M_UVC);
 			}
 			free(ent->controls, M_UVC);
@@ -2620,7 +2620,7 @@ uvc_drv_attach(device_t dev)
 		DPRINTF("UVC Parse Ctrl Error.\n");
 		goto detach;
 	}
-	uvc_ctrl_init_device(sc, sc->ctrl);
+	uvc_ctrl_init_dev(sc, sc->ctrl);
 
 	//hard code here, maybe not only one
 	sc->video = uvc_drv_init_video(sc, sc->ctrl, sc->data);
