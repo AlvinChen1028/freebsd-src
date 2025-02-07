@@ -5,6 +5,7 @@
  *
  *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *	Zhichao Li <Zhichao1.Li@Dell.com>
+ *	Pillar Liang <Pillar.Liang@Dellteam.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
