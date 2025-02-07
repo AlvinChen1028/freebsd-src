@@ -2359,7 +2359,7 @@ uvc_drv_destroy_ctrl(struct uvc_drv_ctrl *c)
 				if (!ctrl->initialized)
 					continue;
 
-				uvc_ctrl_destory_mappings(ctrl);
+				uvc_ctrl_destroy_mappings(ctrl);
 				free(ctrl->uvc_data, M_UVC);
 			}
 			free(ent->controls, M_UVC);

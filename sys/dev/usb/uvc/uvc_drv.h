@@ -174,26 +174,22 @@
 	(UVC_ENT_IS_TERM(ent) && \
 	((ent)->type & 0x8000) == UVC_TERM_OUTPUT)
 
+// 2.3 Video Function Topology
+enum uvc_topo_type {
+	UVC_TOPO_TYPE_UNKNOWN,
+	UVC_TOPO_TYPE_INPUT_TERMINAL,
+	UVC_TOPO_TYPE_OUTPUT_TERMINAL,
+	UVC_TOPO_TYPE_SELECTOR_UNIT,
+	UVC_TOPO_TYPE_PROCESSING_UNIT,
+	UVC_TOPO_TYPE_ENCODING_UNIT,
+	UVC_TOPO_TYPE_EXTENSION_UNIT,
+    UVC_TOPO_TYPE_CAMERA_TERMINAL,
+	UVC_TOPO_TYPE_MEDIA_TRANSPORT_TERMINAL
+};
+
 /* ------------------------------------------------------------------------
  * GUIDs
  */
-
-#define UVC_GUID_UVC_CAMERA \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}
-#define UVC_GUID_UVC_OUTPUT \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02}
-#define UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03}
-#define UVC_GUID_UVC_PROCESSING \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01}
-#define UVC_GUID_UVC_SELECTOR \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02}
-
 #define UVC_GUID_LOGITECH_DEV_INFO \
 	{0x82, 0x06, 0x61, 0x63, 0x70, 0x50, 0xab, 0x49, \
 	0xb8, 0xcc, 0xb3, 0x85, 0x5e, 0x8d, 0x22, 0x1e}
@@ -462,39 +458,57 @@ struct uvc_data_payload_header {
 	UVC_CTRL_GET_MAX | UVC_CTRL_GET_RES | \
 	UVC_CTRL_GET_DEF)
 
-struct uvc_menu_info {
+struct uvc_ctrl_menu_item {
 	uint32_t value;
-	uint8_t name[32];
+	char name[32];
+};
+
+struct uvc_ctrl_menu {
+	uint32_t item_num;
+	struct uvc_ctrl_menu_item* menu_data;
 };
 
 struct uvc_ctrl_info {
-	STAILQ_HEAD(, uvc_ctrl_mapping) mappings;
-	uint8_t entity[16];
 	uint8_t index;       /* Bit index in bmControls */
+
+	enum uvc_topo_type topo_type;
 	uint8_t selector;
-	uint16_t size;
+
+	uint16_t byte_size;
 	uint32_t flags;
+	uint32_t data_type;
+
+#define MAX_MAPPING_NUM 5
+	uint8_t sub_info_num;
+	struct uvc_ctrl_sub_info* sub_infos[MAX_MAPPING_NUM];
+	struct uvc_ctrl_menu menus[MAX_MAPPING_NUM];
+
+	uint8_t cached_sub_info_idx;
 };
 
-struct uvc_ctrl_mapping {
-	STAILQ_ENTRY(uvc_ctrl_mapping) link;
+struct uvc_ctrl_sub_info {
+	struct uvc_ctrl_info* uvc_info;
 
-	uint32_t id;
-	uint8_t name[32];
-	uint8_t entity[16];
-	uint8_t selector;
-	uint8_t size;
-	uint8_t offset;
+	uint32_t v4l2_id;
+	uint8_t v4l2_name[32];
 	enum v4l2_ctrl_type v4l2_type;
-	uint32_t data_type;
-	struct uvc_menu_info *menu_info;
-	uint32_t menu_count;
-	uint32_t main_id;
-	int32_t main_manual;
-	uint32_t sub_ids[2];
-	int32_t (*get)(struct uvc_ctrl_mapping *mapping, uint8_t query,
+
+	uint8_t bit_offset;
+	uint8_t bit_size;
+
+	/*
+		superior & inferior is used to determine flag 'inactive';
+		E.g. Setting the V4L2_CID_HUE when V4L2_CID_HUE_AUTO is selected doesn't do anything.
+		Only when the V4L2_CID_HUE_AUTO is turned off can you set the gain control.
+		In this case, V4L2_CID_HUE_AUTO is superior of V4L2_CID_HUE.
+	*/
+	uint32_t superior_v4l2_id;
+	uint32_t superior_manual;
+	uint32_t inferior_v4l2_ids[2];
+
+	int32_t (*get)(struct uvc_ctrl_sub_info *this, uint8_t query,
 		       const uint8_t *data);
-	void (*set)(struct uvc_ctrl_mapping *mapping, int32_t value,
+	void (*set)(struct uvc_ctrl_sub_info *this, int32_t value,
 		    uint8_t *data);
 };
 
@@ -743,7 +757,7 @@ int uvc_drv_get_selection(struct uvc_drv_video *v, struct v4l2_selection *sel);
 int uvc_drv_get_pixelaspect(void);
 //uvc controls
 int uvc_ctrl_init_dev(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls);
-void uvc_ctrl_destory_mappings(struct uvc_control *ctrl);
+void uvc_ctrl_destroy_mappings(struct uvc_control *ctrl);
 int uvc_query_v4l2_ctrl(struct uvc_drv_video *video,
 			struct v4l2_queryctrl *v4l2_ctrl);
 int uvc_query_v4l2_menu(struct uvc_drv_video *video,
