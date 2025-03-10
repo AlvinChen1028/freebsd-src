@@ -809,11 +809,11 @@ uvc_ctrl_initialize_control(struct uvc_control *ctrl)
 	int ret = 0;
 
 	uint8_t bit_idx = ctrl->index;
-	uint16_t entity_type = UVC_ENT_TYPE(ctrl->entity);
+	uint16_t node_type = UVC_ENT_TYPE(ctrl->topo_node);
 
 	struct uvc_ctrl_info tmp_info;
 
-	switch (entity_type) {
+	switch (node_type) {
 	case UVC_ITT_CAMERA:
 		ret = uvc_ctrl_get_info_ct(bit_idx, &tmp_info);
 		if (ret != 0) {
@@ -914,45 +914,55 @@ uvc_ctrl_count_control(const uint8_t *bmCtrls, uint8_t bCtrlSize)
 int
 uvc_ctrl_init_dev(struct uvc_softc *sc, struct uvc_drv_ctrl *ctrls)
 {
-	struct uvc_drv_entity *ent, *tmp;
+	struct uvc_topo_node *topo_node, *tmp;
 	struct uvc_control *ctrl = NULL;
 	uint8_t bCtrlSize = 0;
 	uint32_t nctrls = 0;
 	uint8_t *bmCtrls = NULL;
 	uint8_t i = 0;
 
+	struct uvc_xu_node_info *node_info_xu = NULL;
+	struct uvc_pu_node_info *node_info_pu = NULL;
+	struct uvc_ct_node_info *node_info_ct = NULL;
+
 	if (!ctrls) {
 		return EINVAL;
 	}
 
-	STAILQ_FOREACH_SAFE(ent, &ctrls->entities, link, tmp) {
-		if (UVC_ENT_TYPE(ent) == UDESCSUB_VC_EXTENSION_UNIT) {
-			bmCtrls = ent->extension.bmControls;
-			bCtrlSize = ent->extension.bControlSize;
-		} else if (UVC_ENT_TYPE(ent) == UDESCSUB_VC_PROCESSING_UNIT) {
-			bmCtrls = ent->processing.bmControls;
-			bCtrlSize = ent->processing.bControlSize;
-		} else if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
-			bmCtrls = ent->camera.bmControls;
-			bCtrlSize = ent->camera.bControlSize;
+	STAILQ_FOREACH_SAFE(topo_node, &ctrls->topo_nodes, link, tmp) {
+		if (UVC_ENT_TYPE(topo_node) == UDESCSUB_VC_EXTENSION_UNIT) {
+			node_info_xu = (struct uvc_xu_node_info*)topo_node->node_info;
+
+			bmCtrls = node_info_xu->bmControls;
+			bCtrlSize = node_info_xu->bControlSize;
+		} else if (UVC_ENT_TYPE(topo_node) == UDESCSUB_VC_PROCESSING_UNIT) {
+			node_info_pu = (struct uvc_pu_node_info*)topo_node->node_info;
+
+			bmCtrls = node_info_pu->bmControls;
+			bCtrlSize = node_info_pu->bControlSize;
+		} else if (UVC_ENT_TYPE(topo_node) == UVC_ITT_CAMERA) {
+			node_info_ct = (struct uvc_ct_node_info*)topo_node->node_info;
+
+			bmCtrls = node_info_ct->bmControls;
+			bCtrlSize = node_info_ct->bControlSize;
 		} else
 			continue;
 
 		nctrls = uvc_ctrl_count_control(bmCtrls, bCtrlSize);
 		if (nctrls == 0)
 			continue;
-		ent->controls = malloc(nctrls * sizeof(*ctrl), M_UVC,
+		topo_node->controls = malloc(nctrls * sizeof(*ctrl), M_UVC,
 		    M_ZERO | M_WAITOK);
-		if (!ent->controls)
+		if (!topo_node->controls)
 			return ENOMEM;
-		ent->ncontrols = nctrls;
+		topo_node->controls_num = nctrls;
 
-		ctrl = ent->controls;
+		ctrl = topo_node->controls;
 		for (i = 0; i < bCtrlSize * 8; i++) {
 			if (uvc_test_bit(bmCtrls, i) == 0)
 				continue;
 
-			ctrl->entity = ent;
+			ctrl->topo_node = topo_node;
 			ctrl->index = i;
 
 			uvc_ctrl_initialize_control(ctrl);
@@ -1026,19 +1036,19 @@ end:
 }
 
 static struct uvc_control *
-uvc_search_control_sub(struct uvc_drv_entity *entity, uint32_t v4l2_id)
+uvc_search_control_sub(struct uvc_topo_node *topo_node, uint32_t v4l2_id)
 {
 	unsigned int i;
 	unsigned int j;
 
 	struct uvc_control *ctrl = NULL;
 
-	if (entity == NULL) {
+	if (topo_node == NULL) {
 		return NULL;
 	}
 
-	for (i = 0; i < entity->ncontrols; ++i) {
-		ctrl = &entity->controls[i];
+	for (i = 0; i < topo_node->controls_num; ++i) {
+		ctrl = &topo_node->controls[i];
 
 		if (!ctrl->initialized)
 			continue;
@@ -1062,7 +1072,7 @@ static struct uvc_control *
 uvc_search_control(struct uvc_drv_ctrl *ctrls, uint32_t v4l2_id)
 {
 	struct uvc_control *ret_ctrl = NULL;
-	struct uvc_drv_entity *entity = NULL, *tmp = NULL;
+	struct uvc_topo_node *topo_node = NULL, *tmp = NULL;
 
 	if (v4l2_id & V4L2_CTRL_FLAG_NEXT_CTRL) {
 		DPRINTF("Not support V4L2_CTRL_FLAG_NEXT_CTRL (0x%08x )\n",
@@ -1074,8 +1084,8 @@ uvc_search_control(struct uvc_drv_ctrl *ctrls, uint32_t v4l2_id)
 	v4l2_id &= V4L2_CTRL_ID_MASK;
 
 	/* Find the control. */
-	STAILQ_FOREACH_SAFE(entity, &ctrls->entities, link, tmp) {
-		ret_ctrl = uvc_search_control_sub(entity, v4l2_id);
+	STAILQ_FOREACH_SAFE(topo_node, &ctrls->topo_nodes, link, tmp) {
+		ret_ctrl = uvc_search_control_sub(topo_node, v4l2_id);
 		if (ret_ctrl != NULL) {
 			return ret_ctrl;
 		}

@@ -218,27 +218,6 @@ uvc_drv_do_request(struct usb_device *udev, uint8_t query, uint8_t unit,
 	return err;
 }
 
-#if 0
-int
-uvc_drv_get_input_ctrl(struct uvc_softc *sc, uint8_t *input)
-{
-	int ret;
-	uint8_t tmp = 0;
-
-	ret = uvc_drv_query_ctrl(sc->udev, GET_CUR, sc->ctrl.sid,
-		sc->ctrl.iface->idesc->bInterfaceNumber,
-		SU_INPUT_SELECT_CONTROL, &tmp, 1, USB_DEFAULT_TIMEOUT);
-
-	DPRINTF("ret:%d\n", ret);
-
-	if (ret < 0)
-		return ret;
-	*input = tmp;
-	return 0;
-}
-#endif
-
-
 static void
 uvc_drv_show_video_ctrl(struct uvc_data_request *req)
 {
@@ -1987,32 +1966,94 @@ uvc_drv_init_data(struct usb_interface *iface, uint8_t iface_index,
 	}
 	return pd;
 }
-static struct uvc_drv_entity *
-uvc_alloc_entity(uint16_t type, uint8_t id,
-		 unsigned int num_pads, unsigned int extra_size)
+
+static void uvc_free_topo_node(struct uvc_topo_node *topo_node)
 {
-	struct uvc_drv_entity *entity;
-	unsigned int num_inputs;
-	unsigned int size;
+	if (topo_node->src_ids != NULL) {
+		free(topo_node->src_ids , M_UVC);
+	}
 
-	extra_size = roundup(extra_size, 8);
-	if (num_pads)
-		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
-	else
-		num_inputs = 0;
-	size = sizeof(*entity) + extra_size + num_inputs;
-	entity = malloc(size, M_UVC, M_ZERO | M_WAITOK);
-	if (entity == NULL)
-		return NULL;
+	if (topo_node->controls_mask != NULL) {
+		free(topo_node->controls_mask , M_UVC);
+	}
 
-	entity->id = id;
-	entity->type = type;
+	if (topo_node->node_info != NULL) {
+		free(topo_node->node_info , M_UVC);
+	}
 
-	entity->num_links = 0;
-	entity->num_pads = num_pads;
-	entity->bNrInPins = num_inputs;
-	entity->baSourceID = (uint8_t *)(entity + 1) + extra_size;
-	return entity;
+	if (topo_node->controls != NULL) {
+		free(topo_node->controls, M_UVC);
+	}
+
+	free(topo_node, M_UVC);
+}
+
+static struct uvc_topo_node *
+uvc_alloc_topo_node(uint16_t node_info_size,
+					uint16_t ctrls_mask_size, // size in bytes
+					uint16_t src_ids_num)
+{
+	struct uvc_topo_node *topo_node = NULL;
+	uint8_t *node_info = NULL;
+	uint8_t *ctrls_mask = NULL;
+	uint8_t *src_ids = NULL;
+
+	topo_node = malloc(sizeof(struct uvc_topo_node), M_UVC, M_ZERO | M_WAITOK);
+	if (topo_node == NULL) {
+		goto mem_fail;
+	}
+
+	if (node_info_size != 0) {
+		node_info = malloc(node_info_size, M_UVC, M_ZERO | M_WAITOK);
+		if (node_info == NULL) {
+			goto mem_fail;
+		}
+	}
+
+	if (ctrls_mask_size != 0) {
+		ctrls_mask = malloc(ctrls_mask_size, M_UVC, M_ZERO | M_WAITOK);
+		if (ctrls_mask == NULL) {
+			goto mem_fail;
+		}
+	}
+
+	if (src_ids_num != 0) {
+		src_ids = malloc(src_ids_num, M_UVC, M_ZERO | M_WAITOK);
+		if (src_ids == NULL) {
+			goto mem_fail;
+		}
+	}
+
+	topo_node->node_info = node_info;
+
+	topo_node->controls_mask = ctrls_mask;
+	topo_node->controls_mask_len = ctrls_mask_size;
+
+	topo_node->src_ids = src_ids;
+	topo_node->src_ids_num = src_ids_num;
+
+	return topo_node;
+
+mem_fail:
+	printf("%s:%d Lack of mem\n", __func__, __LINE__);
+
+	if (src_ids != NULL) {
+		free(src_ids , M_UVC);
+	}
+
+	if (ctrls_mask != NULL) {
+		free(ctrls_mask, M_UVC);
+	}
+
+	if (node_info != NULL) {
+		free(node_info, M_UVC);
+	}
+
+	if (topo_node != NULL) {
+		free(topo_node, M_UVC);
+	}
+
+	return NULL;
 }
 
 
@@ -2025,22 +2066,23 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 	struct uvc_vc_output_terminal_desc *ot_desc;
 	struct uvc_vc_selector_unit_desc *su_desc;
 	struct uvc_vc_processing_unit_desc *pu_desc;
-	struct uvc_vc_extension_unit_desc *eu_desc;
-	struct uvc_drv_entity *ent;
+	struct uvc_vc_extension_unit_desc *xu_desc;
+	struct uvc_topo_node *topo_node;
 	struct usb_interface *iface;
 	int i, vsnum, ret = 0;
-	uint16_t type = 0;
-	uint8_t DSType = 0;
-	uint8_t bCsize = 0;
-	uint8_t bNrInPins = 0;
-	uint8_t id = 0;
+
+	uint16_t node_info_size = 0;
+	uint16_t ctrls_mask_size = 0;
+	uint16_t src_ids_num = 0;
+
 	uint8_t idx;
 
 	if (desc->bDescriptorType != UDESC_CS_INTERFACE)
 		return 0;
 
 	switch (desc->bDescriptorSubtype) {
-	case UDESCSUB_VC_HEADER:
+	case UDESCSUB_VC_HEADER: {
+
 		hdesc = (struct uvc_vc_header_desc *)desc;
 		vsnum = hdesc->bLength >= 12 ? hdesc->bIfaceNums : 0;
 
@@ -2080,6 +2122,7 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 				uvc_drv_show_data(sc->data);
 		}
 		break;
+	}
 	case UDESCSUB_VC_SELECTOR_UNIT: {
 
 		su_desc = (struct uvc_vc_selector_unit_desc *)desc;
@@ -2091,26 +2134,33 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 		ctrl->sid = *((char *)desc + 3);
 		DPRINTF("selector unit id:%d\n", ctrl->sid);
 
-		bNrInPins = su_desc->bLength >= 5 ? su_desc->bNrInPins : 0;
-		if (su_desc->bLength < 5 || su_desc->bLength < bNrInPins + 6) {
+		node_info_size = 0;
+		ctrls_mask_size = 0;
+		src_ids_num = su_desc->bLength >= 5 ? su_desc->bNrInPins : 0;
+
+		if (su_desc->bLength < 5 || su_desc->bLength < src_ids_num + 6) {
 			DPRINTF("bad interface. UDESCSUB_VC_SEL_TERMINAL\n");
 			return EINVAL;
 		}
-		DSType = su_desc->bDescriptorSubType;
-		id = su_desc->bUnitID;
-		ent = uvc_alloc_entity(DSType, id, bNrInPins + 1, 0);
-		if (!ent)
+
+		topo_node = uvc_alloc_topo_node(node_info_size,
+									ctrls_mask_size, src_ids_num);
+		if (!topo_node)
 			return ENOMEM;
-		memcpy((void *)ent->baSourceID,
-		       (uint8_t *)su_desc + 5, bNrInPins);
+
+		topo_node->node_id = su_desc->bUnitID;
+		topo_node->node_type = su_desc->bDescriptorSubType;
+
+		memcpy(topo_node->src_ids,
+		    (uint8_t *)su_desc + 5, src_ids_num);
 
 		if (su_desc->iSelector != 0) {
 			DPRINTF("WARNING: need to get usb string by id\n");
-		} else
-			snprintf(ent->name, 64, "Selector %u", ent->id);
+		} else {
+			snprintf(topo_node->node_name, 64, "Selector %u", topo_node->node_id);
+		}
 
-		STAILQ_INSERT_TAIL(&ctrl->entities, ent, link);
-
+		STAILQ_INSERT_TAIL(&ctrl->topo_nodes, topo_node, link);
 		break;
 	}
 	case UDESCSUB_VC_INPUT_TERMINAL: {
@@ -2126,53 +2176,54 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 			DPRINTF("bad interface. type is unit\n");
 			return EINVAL;
 		}
-		memcpy((void *)&bCsize, (uint8_t *)it_desc + 14, 1);
 
-		id = it_desc->bTerminalID;
-
-		type = UGETW(it_desc->wTerminalType);
-		if (type != UVC_ITT_CAMERA) {
+		// only support UVC_ITT_CAMERA node
+		if (UGETW(it_desc->wTerminalType) != UVC_ITT_CAMERA) {
 			printf("WARNING: to_be_implement\n");
 			return EINVAL;
 		}
 
-		if (it_desc->bLength < 15 + bCsize) {
-			DPRINTF("bad interface. type is unit\n");
+		node_info_size = sizeof(struct uvc_ct_node_info);
+		memcpy((void *)&ctrls_mask_size, (uint8_t *)it_desc + 14, 1);
+		src_ids_num = 0;
+
+		if (it_desc->bLength < 15 + ctrls_mask_size) {
+			DPRINTF("%s:%d bad interface. \n", __func__, __LINE__);
 			return EINVAL;
 		}
 
-		ent = uvc_alloc_entity(type | UVC_TERM_INPUT, id, 1, bCsize);
-
-		//ent = malloc(sizeof(*ent), M_UVC, M_ZERO | M_WAITOK);
-		if (!ent)
+		topo_node = uvc_alloc_topo_node(node_info_size,
+									ctrls_mask_size, src_ids_num);
+		if (!topo_node)
 			return ENOMEM;
 
-		if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
-			ent->camera.bControlSize = bCsize;
-			ent->camera.bmControls = (uint8_t *)ent + sizeof(*ent);
-			memcpy((void *)&ent->camera.wObjectiveFocalLengthMin,
-			       (uint8_t *)it_desc + 8, 2);
-			memcpy((void *)&ent->camera.wObjectiveFocalLengthMax,
-			       (uint8_t *)it_desc + 10, 2);
-			memcpy((void *)&ent->camera.wOcularFocalLength,
-			       (uint8_t *)it_desc + 12, 2);
-			memcpy((void *)ent->camera.bmControls,
-			       (uint8_t *)it_desc + 15, bCsize);
-		} else {
-			printf("WARNING: to_be_implement\n");
-			return EINVAL;
-		}
+		topo_node->node_id = it_desc->bTerminalID;
+		topo_node->node_type = UGETW(it_desc->wTerminalType) | UVC_TERM_INPUT;
+
+		struct uvc_ct_node_info* node_info = (struct uvc_ct_node_info*)topo_node->node_info;
+		memcpy((void *)&node_info->wObjectiveFocalLengthMin,
+			(uint8_t *)it_desc + 8, 2);
+		memcpy((void *)&node_info->wObjectiveFocalLengthMax,
+			(uint8_t *)it_desc + 10, 2);
+		memcpy((void *)&node_info->wOcularFocalLength,
+			(uint8_t *)it_desc + 12, 2);
+
+		node_info->bControlSize = ctrls_mask_size;
+		node_info->bmControls = topo_node->controls_mask;
+		memcpy((void *)node_info->bmControls,
+			(uint8_t *)it_desc + 15, ctrls_mask_size);
+
 		if (it_desc->bITerminal != 0) {
 			printf("WARNING: need to get usb string by id\n");
-		} else if (UVC_ENT_TYPE(ent) == UVC_ITT_CAMERA) {
-			snprintf(ent->name, 64, "Camera %u", ent->id);
+		} else if (UVC_ENT_TYPE(topo_node) == UVC_ITT_CAMERA) {
+			snprintf(topo_node->node_name, 64, "Camera %u", topo_node->node_id);
 		} else
-			snprintf(ent->name, 64, "Input %u", ent->id);
+			snprintf(topo_node->node_name, 64, "Input %u", topo_node->node_id);
 
-		STAILQ_INSERT_TAIL(&ctrl->entities, ent, link);
+		STAILQ_INSERT_TAIL(&ctrl->topo_nodes, topo_node, link);
 		break;
 	}
-	case UDESCSUB_VC_OUTPUT_TERMINAL:
+	case UDESCSUB_VC_OUTPUT_TERMINAL: {
 
 		ot_desc = (struct uvc_vc_output_terminal_desc *)desc;
 		if (ot_desc->bLength < sizeof(*ot_desc)) {
@@ -2185,65 +2236,82 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 			return EINVAL;
 		}
 
-		id = ot_desc->bTerminalID;
+		node_info_size = 0;
+		ctrls_mask_size = 0;
+		src_ids_num = 1;
 
-		type = UGETW(ot_desc->wTerminalType);
-		ent = uvc_alloc_entity(type | UVC_TERM_OUTPUT, id, 1, 0);
-		if (!ent)
+		topo_node = uvc_alloc_topo_node(node_info_size, ctrls_mask_size, src_ids_num);
+		if (!topo_node)
 			return ENOMEM;
-		memcpy((void *)ent->baSourceID,
-		       (uint8_t *)ot_desc + 7, 1);
+
+		topo_node->node_id = ot_desc->bTerminalID;
+		topo_node->node_type =  UGETW(ot_desc->wTerminalType) | UVC_TERM_OUTPUT;
+
+		memcpy((void *)topo_node->src_ids,
+		    (uint8_t *)ot_desc + 7, 1);
 
 		if (ot_desc->bITerminal != 0) {
 			printf("WARNING: need to get usb string by id\n");
 		} else
-			snprintf(ent->name, 64, "Output %u", ent->id);
+			snprintf(topo_node->node_name, 64, "Output %u", topo_node->node_id);
 
-		STAILQ_INSERT_TAIL(&ctrl->entities, ent, link);
+		STAILQ_INSERT_TAIL(&ctrl->topo_nodes, topo_node, link);
 		break;
+	}
 	case UDESCSUB_VC_PROCESSING_UNIT: {
 		uint8_t p = ctrl->revision >= 0x0110 ? 10 : 9;
 
 		pu_desc = (struct uvc_vc_processing_unit_desc *)desc;
 
-		bCsize = pu_desc->bLength >= 8 ? pu_desc->bControlSize : 0;
-		if (pu_desc->bLength < bCsize + p) {
-			DPRINTF("bad interface. UDESCSUB_VC_INPUT_TERMINAL\n");
+		ctrls_mask_size = pu_desc->bLength >= 8 ? pu_desc->bControlSize : 0;
+		if (pu_desc->bLength < ctrls_mask_size + p) {
+			DPRINTF("bad interface. UDESCSUB_VC_PROCESSING_UNIT\n");
 			return EINVAL;
 		}
-		DSType = pu_desc->bDescriptorSubType;
-		id = pu_desc->bUnitID;
-		ent = uvc_alloc_entity(DSType, id, 2, bCsize);
-		if (!ent)
+
+		node_info_size = sizeof(struct uvc_pu_node_info);
+		src_ids_num = 1;
+
+		topo_node = uvc_alloc_topo_node(node_info_size,
+									ctrls_mask_size, src_ids_num);
+		if (!topo_node)
 			return ENOMEM;
-		memcpy((void *)ent->baSourceID,
-		       (uint8_t *)pu_desc + 4, 1);
-		ent->processing.wMaxMultiplier = UGETW(pu_desc->wMaxMultiplier);
-		ent->processing.bControlSize = bCsize;
-		ent->processing.bmControls = (uint8_t *)ent + sizeof(*ent);
-		memcpy((void *)ent->processing.bmControls,
-		       (uint8_t *)pu_desc + 8, bCsize);
+
+		topo_node->node_id = pu_desc->bUnitID;
+		topo_node->node_type = pu_desc->bDescriptorSubType;
+
+		struct uvc_pu_node_info* node_info = (struct uvc_pu_node_info*)topo_node->node_info;
+		node_info->wMaxMultiplier = UGETW(pu_desc->wMaxMultiplier);
+
+		node_info->bControlSize = ctrls_mask_size;
+		node_info->bmControls = topo_node->controls_mask;
+		memcpy((void *)node_info->bmControls,
+		       (uint8_t *)pu_desc + 8, ctrls_mask_size);
+
+		memcpy(topo_node->src_ids, (uint8_t *)pu_desc + 4, src_ids_num);
+
 		if (ctrl->revision >= 0x0110)
-			ent->processing.bmVideoStandards =
+			node_info->bmVideoStandards =
 				pu_desc->bmVideoStandards;
 
 		if (pu_desc->iProcessing != 0) {
 			printf("WARNING: need to get usb string by id\n");
 		} else
-			snprintf(ent->name, 64, "Processing %u", ent->id);
+			snprintf(topo_node->node_name, 64, "Processing %u", topo_node->node_id);
 
-		STAILQ_INSERT_TAIL(&ctrl->entities, ent, link);
+		STAILQ_INSERT_TAIL(&ctrl->topo_nodes, topo_node, link);
 		break;
 	}
-	case UDESCSUB_VC_EXTENSION_UNIT:
-		eu_desc = (struct uvc_vc_extension_unit_desc *)desc;
+	case UDESCSUB_VC_EXTENSION_UNIT: {
+		xu_desc = (struct uvc_vc_extension_unit_desc *)desc;
 
-		bNrInPins = eu_desc->bLength >= 22 ? eu_desc->bNrInPins : 0;
-		bCsize = eu_desc->bLength >= 24 ?
-			*(&eu_desc->bControlSize + bNrInPins) : 0;
+		node_info_size = sizeof(struct uvc_xu_node_info);
+		src_ids_num = xu_desc->bLength >= 22 ? xu_desc->bNrInPins : 0;
+		ctrls_mask_size = xu_desc->bLength >= 24 ?
+			*(&xu_desc->bControlSize + src_ids_num) : 0;
 
-		if (eu_desc->bLength < bCsize + bNrInPins + 24) {
-			DPRINTF("bad interface. UDESCSUB_VC_INPUT_TERMINAL\n");
+		if (xu_desc->bLength < ctrls_mask_size + src_ids_num + 24) {
+			DPRINTF("bad interface. UDESCSUB_VC_EXTENSION_UNIT\n");
 			return EINVAL;
 		}
 
@@ -2253,26 +2321,37 @@ uvc_drv_parse_standard_ctrl(struct uvc_softc *sc,
 			printf("this is h264 extension.\n");
 			ctrl->h264id = *((char *)desc + 3);
 		}
-		DSType = eu_desc->bDescriptorSubType;
-		id = eu_desc->bUnitID;
-		ent = uvc_alloc_entity(DSType, id, bNrInPins + 1, bCsize);
-		if (!ent)
+
+		topo_node = uvc_alloc_topo_node(node_info_size,
+									ctrls_mask_size, src_ids_num);
+		if (!topo_node)
 			return ENOMEM;
-		memcpy((void *)&ent->extension.guidExtensionCode,
-		       (uint8_t *)eu_desc + 4, 16);
-		ent->extension.bNumControls = eu_desc->bNumControls;
-		memcpy((void *)ent->baSourceID,
-		       (uint8_t *)eu_desc + 22, bNrInPins);
-		ent->extension.bControlSize = bCsize;
-		ent->extension.bmControls = (uint8_t *)ent + sizeof(*ent);
-		memcpy((void *)ent->extension.bmControls,
-		       (uint8_t *)eu_desc + 23 + bNrInPins, bCsize);
-		if (*(&eu_desc->iExtension + bCsize + bNrInPins) != 0)
+
+		topo_node->node_id = xu_desc->bUnitID;
+		topo_node->node_type = xu_desc->bDescriptorSubType;
+
+		struct uvc_xu_node_info* node_info = (struct uvc_xu_node_info* )topo_node->node_info;
+
+		memcpy((void *)&node_info->guidExtensionCode,
+		       (uint8_t *)xu_desc + 4, 16);
+		node_info->bNumControls = xu_desc->bNumControls;
+
+		node_info->bControlSize = ctrls_mask_size;
+		node_info->bmControls = topo_node->controls_mask;
+		memcpy((void *)node_info->bmControls,
+		       (uint8_t *)xu_desc + 23 + src_ids_num, ctrls_mask_size);
+
+		memcpy((void *)topo_node->src_ids,
+		       (uint8_t *)xu_desc + 22, src_ids_num);
+
+		if (*(&xu_desc->iExtension + ctrls_mask_size + src_ids_num) != 0)
 			printf("WARNING: need to get usb string by id\n");
 		else
-			sprintf(ent->name, "Extension %u", ent->id);
-		STAILQ_INSERT_TAIL(&ctrl->entities, ent, link);
+			sprintf(topo_node->node_name, "Extension %u", topo_node->node_id);
+
+		STAILQ_INSERT_TAIL(&ctrl->topo_nodes, topo_node, link);
 		break;
+	}
 	}
 
 	return ret;
@@ -2341,7 +2420,7 @@ uvc_drv_init_ctrl(struct usb_interface *iface, uint8_t iface_index,
 		pc->iface_index = iface_index;
 		pc->iface_num = iface_num;
 		mtx_init(&pc->mtx, "uvc ctrl lock", NULL, MTX_DEF);
-		STAILQ_INIT(&pc->entities);
+		STAILQ_INIT(&pc->topo_nodes);
 	}
 	return pc;
 }
@@ -2349,13 +2428,13 @@ uvc_drv_init_ctrl(struct usb_interface *iface, uint8_t iface_index,
 static void
 uvc_drv_destroy_ctrl(struct uvc_drv_ctrl *c)
 {
-	struct uvc_drv_entity *ent, *tmp;
+	struct uvc_topo_node *topo_node, *tmp;
 	uint8_t i = 0;
 
 	if (c) {
-		STAILQ_FOREACH_SAFE(ent, &c->entities, link, tmp) {
-			for (i = 0; i < ent->ncontrols; ++i) {
-				struct uvc_control *ctrl = &ent->controls[i];
+		STAILQ_FOREACH_SAFE(topo_node, &c->topo_nodes, link, tmp) {
+			for (i = 0; i < topo_node->controls_num; ++i) {
+				struct uvc_control *ctrl = &topo_node->controls[i];
 
 				if (!ctrl->initialized)
 					continue;
@@ -2363,8 +2442,8 @@ uvc_drv_destroy_ctrl(struct uvc_drv_ctrl *c)
 				uvc_ctrl_destroy_mappings(ctrl);
 				free(ctrl->uvc_data, M_UVC);
 			}
-			free(ent->controls, M_UVC);
-			free(ent, M_UVC);
+
+			uvc_free_topo_node(topo_node);
 		}
 		free(c, M_UVC);
 	}

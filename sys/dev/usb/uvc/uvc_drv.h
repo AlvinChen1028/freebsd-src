@@ -165,15 +165,15 @@
 #define UVC_TERM_OUTPUT                 0x8000
 #define UVC_TERM_DIRECTION(term)        ((term)->type & 0x8000)
 
-#define UVC_ENT_TYPE(ent)		((ent)->type & 0x7fff)
-#define UVC_ENT_IS_UNIT(ent)		(((ent)->type & 0xff00) == 0)
-#define UVC_ENT_IS_TERM(ent)		(((ent)->type & 0xff00) != 0)
+#define UVC_ENT_TYPE(ent)		((ent)->node_type & 0x7fff)
+#define UVC_ENT_IS_UNIT(ent)		(((ent)->node_type & 0xff00) == 0)
+#define UVC_ENT_IS_TERM(ent)		(((ent)->node_type & 0xff00) != 0)
 #define UVC_ENT_IS_ITERM(ent) \
 	(UVC_ENT_IS_TERM(ent) && \
-	((ent)->type & 0x8000) == UVC_TERM_INPUT)
+	((ent)->node_type & 0x8000) == UVC_TERM_INPUT)
 #define UVC_ENT_IS_OTERM(ent) \
 	(UVC_ENT_IS_TERM(ent) && \
-	((ent)->type & 0x8000) == UVC_TERM_OUTPUT)
+	((ent)->node_type & 0x8000) == UVC_TERM_OUTPUT)
 
 // 2.3 Video Function Topology
 enum uvc_topo_type {
@@ -184,7 +184,7 @@ enum uvc_topo_type {
 	UVC_TOPO_TYPE_PROCESSING_UNIT,
 	UVC_TOPO_TYPE_ENCODING_UNIT,
 	UVC_TOPO_TYPE_EXTENSION_UNIT,
-    UVC_TOPO_TYPE_CAMERA_TERMINAL,
+	UVC_TOPO_TYPE_CAMERA_TERMINAL,
 	UVC_TOPO_TYPE_MEDIA_TRANSPORT_TERMINAL
 };
 
@@ -515,7 +515,7 @@ struct uvc_ctrl_sub_info {
 
 
 struct uvc_control {
-	struct uvc_drv_entity *entity;
+	struct uvc_topo_node *topo_node;
 	struct uvc_ctrl_info info;
 	uint8_t index; /*
 			*  Used to match the uvc_control entry
@@ -531,61 +531,72 @@ struct uvc_control {
 	/* File handle that last changed the control. */
 	struct uvc_drv_video *video;
 };
+struct uvc_ct_node_info {
+	uint16_t wObjectiveFocalLengthMin;
+	uint16_t wObjectiveFocalLengthMax;
+	uint16_t wOcularFocalLength;
+	uint8_t bControlSize;
+	uint8_t *bmControls;
+}; // Camera Terminal
 
-struct uvc_drv_entity {
-	STAILQ_ENTRY(uvc_drv_entity) link;
+struct uvc_media_node_info {
+	uint8_t bControlSize;
+	uint8_t *bmControls;
+	uint8_t bTransportModeSize;
+	uint8_t *bmTransportModes;
+}; // MEDIA Transport Terminal
+
+struct uvc_pu_node_info {
+	uint16_t wMaxMultiplier;
+	uint8_t bControlSize;
+	uint8_t *bmControls;
+	uint8_t bmVideoStandards;
+}; // Processing Unit
+
+struct uvc_xu_node_info {
+	uint8_t guidExtensionCode[16];
+	uint8_t bNumControls;
+	uint8_t bControlSize;
+	uint8_t *bmControls;
+	uint8_t *bmControlsType;
+}; // Extension Unit
+
+struct uvc_topo_node {
+	STAILQ_ENTRY(uvc_topo_node) link;
+
+	char node_name[64];
+
+	uint16_t node_type;
 
 	uint32_t flags;
 
-	uint8_t id;
-	uint16_t type;
-	char name[64];
+	uint8_t node_id;
+	// e.g.:
+	// If Video Function Topology like this:
+	//  o---o
+	//  | 2 |
+	//  o---o
+	//    \___ o---o
+	//     ___ | 5 |
+	//    /    o---o
+	//  o---o
+	//  | 3 |
+	//  o---o
+	//
+	// node 5 has two source ids,
+	// one is node 2, another is node 3.
+	uint16_t src_ids_num;
+	uint8_t *src_ids;
 
-	unsigned int num_pads;
-	unsigned int num_links;
-//	struct media_pad *pads;
-	union {
-		struct {
-			uint16_t wObjectiveFocalLengthMin;
-			uint16_t wObjectiveFocalLengthMax;
-			uint16_t wOcularFocalLength;
-			uint8_t  bControlSize;
-			uint8_t  *bmControls;
-		} camera;
+	// mask of controls
+	uint16_t controls_mask_len;
+	uint8_t *controls_mask;
 
-		struct {
-			uint8_t  bControlSize;
-			uint8_t  *bmControls;
-			uint8_t  bTransportModeSize;
-			uint8_t  *bmTransportModes;
-		} media;
-
-		struct {
-		} output;
-
-		struct {
-			uint16_t wMaxMultiplier;
-			uint8_t  bControlSize;
-			uint8_t  *bmControls;
-			uint8_t  bmVideoStandards;
-		} processing;
-
-		struct {
-		} selector;
-
-		struct {
-			uint8_t  guidExtensionCode[16];
-			uint8_t  bNumControls;
-			uint8_t  bControlSize;
-			uint8_t  *bmControls;
-			uint8_t  *bmControlsType;
-		} extension;
-	};
-	uint8_t bNrInPins;
-	uint8_t *baSourceID;
-
-	uint32_t ncontrols;
+	uint32_t controls_num;
 	struct uvc_control *controls;
+
+	// data pointed by node_info is specified by topo_type
+	void *node_info;
 };
 
 struct uvc_data_interval {
@@ -662,7 +673,7 @@ struct uvc_drv_ctrl {
 	struct mtx	mtx;
 
 /* desc infomation */
-	STAILQ_HEAD(, uvc_drv_entity)	entities;
+	STAILQ_HEAD(, uvc_topo_node) topo_nodes;
 	uint8_t	sid;
 	uint8_t	h264id;
 	uint8_t unuse;

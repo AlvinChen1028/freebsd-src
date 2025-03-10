@@ -5,6 +5,7 @@
  *
  *	Alvin Chen <weike_chen@dell.com, vico.chern@qq.com>
  *	Zhichao Li <Zhichao1.Li@Dell.com>
+ *	Pilar Liang <Pillar.Liang@Dellteam.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -301,19 +302,19 @@ static int
 uvc_v4l2_enum_input(struct uvc_drv_ctrl *ctrl, struct v4l2_input *input)
 {
 	uint32_t index = input->index;
-	struct uvc_drv_entity *it;
+	struct uvc_topo_node *it = NULL; // input terminal
 
 	/*WARNING: to_be_implement here, hard code no SELECTOR */
 	if (index)
 		return EINVAL;
 
-	it = STAILQ_FIRST(&ctrl->entities);
+	it = STAILQ_FIRST(&ctrl->topo_nodes);
 	if (!it)
 		return EINVAL;
 
 	memset(input, 0, sizeof(*input));
 	input->index = index;
-	strlcpy(input->name, it->name, sizeof(input->name));
+	strlcpy(input->name, it->node_name, sizeof(input->name));
 	input->type = V4L2_INPUT_TYPE_CAMERA;
 
 	return 0;
